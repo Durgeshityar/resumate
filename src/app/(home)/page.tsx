@@ -3,14 +3,20 @@ import { Button } from '@/components/ui/button' // Assuming you have a Button co
 import {
   Github,
   Check,
-  Code,
-  Shield,
-  Users,
   ChevronRight,
   Server,
-  Globe,
   Star,
-  GitFork,
+  FileText,
+  Target,
+  Edit,
+  Award,
+  Settings,
+  Zap,
+  MessageCircle,
+  ThumbsUp,
+  Clock,
+  Briefcase,
+  Sparkles,
 } from 'lucide-react' // Example icons
 
 import { Doto } from 'next/font/google'
@@ -41,11 +47,11 @@ const HomePage = () => {
             <a href="#features" className="text-gray-300 hover:text-white">
               Features
             </a>
+            <a href="#examples" className="text-gray-300 hover:text-white">
+              Examples
+            </a>
             <a href="#pricing" className="text-gray-300 hover:text-white">
               Pricing
-            </a>
-            <a href="#demo" className="text-gray-300 hover:text-white">
-              Demo
             </a>
             <a
               href="https://github.com/your-repo"
@@ -69,7 +75,7 @@ const HomePage = () => {
       </header>
 
       <main className="flex-grow">
-        {/* Hero Section - Vercel Style */}
+        {/* Hero Section - Keeping as requested */}
         <section className="py-20 md:py-32 border-b border-gray-800">
           <div className="container mx-auto px-4 text-center">
             <div className="inline-flex items-center bg-gray-800 rounded-full px-3 py-1 text-xs text-gray-300 mb-6">
@@ -117,73 +123,443 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* Features Grid */}
+        {/* Value Proposition Section - Instead of User Stats */}
+        <section className="py-16 border-b border-gray-800 overflow-hidden relative">
+          <div className="absolute w-96 h-96 bg-blue-500/10 rounded-full -top-48 -left-48 blur-3xl"></div>
+          <div className="absolute w-96 h-96 bg-green-500/10 rounded-full -bottom-48 -right-48 blur-3xl"></div>
+
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
+              <div className="bg-gray-900/60 backdrop-blur-sm p-8 rounded-lg border border-gray-800 transform transition-all hover:scale-105 hover:border-blue-500/50">
+                <div className="mb-4 flex items-center">
+                  <Clock className="h-6 w-6 text-blue-500 mr-3" />
+                  <h3 className="text-xl font-semibold">5-Minute Resume</h3>
+                </div>
+                <p className="text-gray-300">
+                  Create a professional, ATS-optimized resume in just 5 minutes
+                  with our AI-powered tools.
+                </p>
+              </div>
+
+              <div className="bg-gray-900/60 backdrop-blur-sm p-8 rounded-lg border border-gray-800 transform transition-all hover:scale-105 hover:border-green-500/50">
+                <div className="mb-4 flex items-center">
+                  <Briefcase className="h-6 w-6 text-green-500 mr-3" />
+                  <h3 className="text-xl font-semibold">Interview Ready</h3>
+                </div>
+                <p className="text-gray-300">
+                  Our AI algorithms ensure your resume passes ATS systems and
+                  catches the human recruiter&apos;s eye.
+                </p>
+              </div>
+
+              <div className="bg-gray-900/60 backdrop-blur-sm p-8 rounded-lg border border-gray-800 transform transition-all hover:scale-105 hover:border-purple-500/50">
+                <div className="mb-4 flex items-center">
+                  <Sparkles className="h-6 w-6 text-purple-500 mr-3" />
+                  <h3 className="text-xl font-semibold">Stand Out</h3>
+                </div>
+                <p className="text-gray-300">
+                  Don&apos;t blend in with cookie-cutter templates. Our AI helps
+                  your unique skills and experiences shine.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* AI Features - Rezi Style */}
         <section id="features" className="py-20 border-b border-gray-800">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold mb-12 text-center">
-              Built for developers and job seekers alike
+              The smartest AI for resume writing
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-gray-900 p-6 rounded-lg">
-                <div className="h-10 w-10 bg-blue-900/30 rounded-lg flex items-center justify-center mb-4">
-                  <Code className="h-5 w-5 text-blue-500" />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-20">
+              {/* Feature 1 */}
+              <div className="flex flex-col">
+                <div className="h-12 w-12 bg-blue-900/30 rounded-lg flex items-center justify-center mb-6">
+                  <Target className="h-6 w-6 text-blue-500" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">
-                  Fully Customizable
+                <h3 className="text-2xl font-semibold mb-4">
+                  AI Keyword Targeting
                 </h3>
-                <p className="text-gray-400">
-                  Customize every line of code, every template, and every aspect
-                  of your resume.
+                <p className="text-gray-400 mb-6">
+                  Instantly improve your chances of being selected for an
+                  interview by optimizing your resume with keywords from the job
+                  description.
                 </p>
-              </div>
-              <div className="bg-gray-900 p-6 rounded-lg">
-                <div className="h-10 w-10 bg-green-900/30 rounded-lg flex items-center justify-center mb-4">
-                  <Shield className="h-5 w-5 text-green-500" />
+                <div className="mt-auto">
+                  <div className="bg-gray-900 rounded-md p-6">
+                    <p className="text-sm text-gray-300 mb-4">
+                      Great work! You&apos;re ranking well for these keywords in
+                      the job description:
+                    </p>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {[
+                        'Strategic Planning',
+                        'Project Management',
+                        'Team Leadership',
+                        'Data Analysis',
+                        'Client Relations',
+                      ].map((keyword) => (
+                        <span
+                          key={keyword}
+                          className="bg-blue-900/30 text-blue-400 rounded-full px-3 py-1 text-xs"
+                        >
+                          {keyword}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Privacy-First</h3>
-                <p className="text-gray-400">
-                  Your data stays with you. No hidden tracking, no data selling,
-                  complete transparency.
-                </p>
               </div>
-              <div className="bg-gray-900 p-6 rounded-lg">
-                <div className="h-10 w-10 bg-purple-900/30 rounded-lg flex items-center justify-center mb-4">
-                  <Users className="h-5 w-5 text-purple-500" />
+
+              {/* Feature 2 */}
+              <div className="flex flex-col">
+                <div className="h-12 w-12 bg-green-900/30 rounded-lg flex items-center justify-center mb-6">
+                  <Edit className="h-6 w-6 text-green-500" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Community-Driven</h3>
-                <p className="text-gray-400">
-                  Join a global community of developers building the future of
-                  job applications.
+                <h3 className="text-2xl font-semibold mb-4">
+                  AI Content Writer
+                </h3>
+                <p className="text-gray-400 mb-6">
+                  AI writes metrics-driven resume content for you, focused on
+                  the skills and experience that recruiters are actually looking
+                  for.
                 </p>
+                <div className="mt-auto">
+                  <div className="bg-gray-900 rounded-md p-6">
+                    <p className="text-sm text-gray-300 mb-4">
+                      What did you accomplish at the company?
+                    </p>
+                    <div className="bg-gray-800 rounded p-4 text-sm text-gray-300">
+                      • Increased team productivity by 37% through
+                      implementation of agile methodologies and streamlined
+                      workflows
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Feature 3 */}
+              <div className="flex flex-col">
+                <div className="h-12 w-12 bg-purple-900/30 rounded-lg flex items-center justify-center mb-6">
+                  <Settings className="h-6 w-6 text-purple-500" />
+                </div>
+                <h3 className="text-2xl font-semibold mb-4">Design Control</h3>
+                <p className="text-gray-400 mb-6">
+                  Easily design a fully ATS-optimized resume in a few clicks.
+                  Choose colors, formatting, font sizing, pictures, and more.
+                </p>
+                <div className="mt-auto">
+                  <div className="bg-gray-900 rounded-md p-6 flex flex-wrap gap-3">
+                    <div className="h-8 w-8 rounded-full bg-blue-500"></div>
+                    <div className="h-8 w-8 rounded-full bg-green-500"></div>
+                    <div className="h-8 w-8 rounded-full bg-purple-500"></div>
+                    <div className="h-8 w-8 rounded-full bg-red-500"></div>
+                    <div className="h-8 w-8 rounded-full bg-yellow-500"></div>
+                    <div className="h-8 w-8 rounded-full bg-gray-500"></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Feature 4 */}
+              <div className="flex flex-col">
+                <div className="h-12 w-12 bg-orange-900/30 rounded-lg flex items-center justify-center mb-6">
+                  <Award className="h-6 w-6 text-orange-500" />
+                </div>
+                <h3 className="text-2xl font-semibold mb-4">Rezi Score</h3>
+                <p className="text-gray-400 mb-6">
+                  Get your resume rated across 23 key metrics that help you pass
+                  Applicant Tracking Systems and impress recruiters.
+                </p>
+                <div className="mt-auto">
+                  <div className="bg-gray-900 rounded-md p-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-gray-300">
+                        Resume Score
+                      </span>
+                      <span className="text-sm font-bold text-white">
+                        86/100
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-700 rounded-full h-2.5">
+                      <div
+                        className="bg-green-500 h-2.5 rounded-full"
+                        style={{ width: '86%' }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* GitHub Stats Section */}
-        <section className="py-16 border-b border-gray-800">
+        {/* Resume Examples - Rezi Style */}
+        <section id="examples" className="py-20 border-b border-gray-800">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-8 text-center">
+              Real-life successful resume examples
+            </h2>
+            <p className="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
+              Browse our professional resume samples and find one for your job
+              title. Learn what matters most in your industry & create a
+              job-winning resume.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+              {/* Example 1 */}
+              <div className="bg-gray-900 rounded-lg overflow-hidden">
+                <div className="h-64 bg-gray-800 flex items-center justify-center">
+                  <FileText className="h-16 w-16 text-gray-700" />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-semibold mb-1">IT Project Manager</h3>
+                  <p className="text-gray-400 text-sm">
+                    Information Technology
+                  </p>
+                </div>
+              </div>
+
+              {/* Example 2 */}
+              <div className="bg-gray-900 rounded-lg overflow-hidden">
+                <div className="h-64 bg-gray-800 flex items-center justify-center">
+                  <FileText className="h-16 w-16 text-gray-700" />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-semibold mb-1">Marketing Specialist</h3>
+                  <p className="text-gray-400 text-sm">
+                    Marketing & Communications
+                  </p>
+                </div>
+              </div>
+
+              {/* Example 3 */}
+              <div className="bg-gray-900 rounded-lg overflow-hidden">
+                <div className="h-64 bg-gray-800 flex items-center justify-center">
+                  <FileText className="h-16 w-16 text-gray-700" />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-semibold mb-1">UX Designer</h3>
+                  <p className="text-gray-400 text-sm">Design</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center">
+              <Button
+                variant="outline"
+                className="border-gray-700 text-white hover:text-white hover:bg-gray-800"
+              >
+                View All Examples
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials - Rezi Style */}
+        <section className="py-20 border-b border-gray-800">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-12 text-center">
+              Real Users. Real Conversations.
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              {/* Testimonial 1 */}
+              <div className="bg-gray-900 p-6 rounded-lg border border-gray-800">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center mr-4">
+                    <span className="text-white font-bold">JD</span>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold">John Doe</h4>
+                    <p className="text-gray-400 text-sm">Software Engineer</p>
+                  </div>
+                </div>
+                <p className="text-gray-300">
+                  &quot;I was stuck in a job search loop for months before using
+                  Resumate. After optimizing my resume with the AI tools, I got
+                  three interview calls in the first week. Landed my dream job
+                  within a month!&quot;
+                </p>
+                <div className="flex text-yellow-500 mt-4">
+                  <Star className="h-4 w-4 fill-current" />
+                  <Star className="h-4 w-4 fill-current" />
+                  <Star className="h-4 w-4 fill-current" />
+                  <Star className="h-4 w-4 fill-current" />
+                  <Star className="h-4 w-4 fill-current" />
+                </div>
+              </div>
+
+              {/* Testimonial 2 */}
+              <div className="bg-gray-900 p-6 rounded-lg border border-gray-800">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-green-900 rounded-full flex items-center justify-center mr-4">
+                    <span className="text-white font-bold">SL</span>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold">Sarah Lee</h4>
+                    <p className="text-gray-400 text-sm">Marketing Director</p>
+                  </div>
+                </div>
+                <p className="text-gray-300">
+                  &quot;The keyword targeting feature is incredible. I was able
+                  to tailor my resume perfectly to each job application. The
+                  resume score feedback helped me improve sections I didn&apos;t
+                  even realize were weak.&quot;
+                </p>
+                <div className="flex text-yellow-500 mt-4">
+                  <Star className="h-4 w-4 fill-current" />
+                  <Star className="h-4 w-4 fill-current" />
+                  <Star className="h-4 w-4 fill-current" />
+                  <Star className="h-4 w-4 fill-current" />
+                  <Star className="h-4 w-4 fill-current" />
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-12 flex justify-center">
+              <div className="inline-flex bg-gray-800 rounded-full p-1">
+                <div className="h-2 w-8 bg-blue-500 rounded-full"></div>
+                <div className="h-2 w-2 bg-gray-600 rounded-full mx-1"></div>
+                <div className="h-2 w-2 bg-gray-600 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* How It Works - Rezi Style */}
+        <section className="py-20 border-b border-gray-800">
           <div className="container mx-auto px-4 text-center">
-            <div className="inline-flex items-center justify-center space-x-8 flex-wrap">
-              <div className="flex items-center">
-                <Star className="h-5 w-5 text-yellow-500 mr-2" />
-                <span className="text-2xl font-bold">2.5k</span>
-                <span className="text-gray-400 ml-2">Stars</span>
+            <h2 className="text-3xl font-bold mb-4">
+              It&apos;s never been easier to make your resume
+            </h2>
+            <p className="text-gray-400 mb-16 max-w-2xl mx-auto">
+              Resumate makes it simple to create a professional, ATS-optimized
+              resume in minutes.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-4xl mx-auto">
+              <div className="flex flex-col items-center">
+                <div className="h-16 w-16 bg-blue-900/30 rounded-full flex items-center justify-center mb-6">
+                  <Zap className="h-8 w-8 text-blue-500" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Create or Upload</h3>
+                <p className="text-gray-400 text-sm">
+                  Start fresh or upload your existing resume to enhance with our
+                  AI tools.
+                </p>
               </div>
-              <div className="flex items-center">
-                <GitFork className="h-5 w-5 text-blue-500 mr-2" />
-                <span className="text-2xl font-bold">450+</span>
-                <span className="text-gray-400 ml-2">Forks</span>
+
+              <div className="flex flex-col items-center">
+                <div className="h-16 w-16 bg-green-900/30 rounded-full flex items-center justify-center mb-6">
+                  <MessageCircle className="h-8 w-8 text-green-500" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">AI Optimization</h3>
+                <p className="text-gray-400 text-sm">
+                  Our AI analyzes job descriptions and optimizes your content
+                  for the best match.
+                </p>
               </div>
-              <div className="flex items-center">
-                <Users className="h-5 w-5 text-green-500 mr-2" />
-                <span className="text-2xl font-bold">120+</span>
-                <span className="text-gray-400 ml-2">Contributors</span>
+
+              <div className="flex flex-col items-center">
+                <div className="h-16 w-16 bg-purple-900/30 rounded-full flex items-center justify-center mb-6">
+                  <ThumbsUp className="h-8 w-8 text-purple-500" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">
+                  Apply & Get Hired
+                </h3>
+                <p className="text-gray-400 text-sm">
+                  Download your perfectly formatted resume and start landing
+                  interviews.
+                </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Pricing Section */}
+        {/* Product Demo Section */}
+        <section className="py-20 border-b border-gray-800 overflow-hidden relative">
+          <div className="absolute w-96 h-96 bg-blue-500/5 rounded-full -right-48 top-48 blur-3xl"></div>
+
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold mb-4">
+                See Resumate in Action
+              </h2>
+              <p className="text-gray-400 max-w-2xl mx-auto">
+                Our intuitive AI-powered platform makes building a professional
+                resume simple and fast. Watch how Resumate transforms your
+                career information into an impressive resume.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              {/* Video Demo Container */}
+              <div className="relative aspect-video w-full">
+                <div className="absolute inset-0 -right-4 -bottom-4 border-2 border-blue-500/30 rounded-lg transform rotate-1"></div>
+                <div className="relative bg-gray-900 rounded-lg overflow-hidden border border-gray-800 shadow-2xl h-full flex items-center justify-center">
+                  {/* This is where your video will be rendered */}
+                  <div className="text-gray-500 flex flex-col items-center">
+                    <FileText className="h-12 w-12 mb-4" />
+                    <p>Demo video will be rendered here</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Demo Features */}
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-xl font-semibold mb-3 flex items-center">
+                    <Target className="h-5 w-5 text-blue-500 mr-2" />
+                    Smart Templates
+                  </h3>
+                  <p className="text-gray-400">
+                    Choose from ATS-optimized templates designed to pass through
+                    applicant tracking systems and impress hiring managers.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-semibold mb-3 flex items-center">
+                    <Edit className="h-5 w-5 text-green-500 mr-2" />
+                    AI Content Generation
+                  </h3>
+                  <p className="text-gray-400">
+                    Let our AI analyze your experience and automatically
+                    generate powerful bullet points that highlight your
+                    achievements.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-semibold mb-3 flex items-center">
+                    <Settings className="h-5 w-5 text-purple-500 mr-2" />
+                    Real-time Feedback
+                  </h3>
+                  <p className="text-gray-400">
+                    Get instant analysis of your resume&apos;s strengths and
+                    weaknesses, with specific suggestions for improvement.
+                  </p>
+                </div>
+
+                <div className="pt-4">
+                  <Button className="bg-white text-black hover:bg-gray-200">
+                    Try It Now
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="ml-4 border-gray-700 text-white hover:bg-gray-800"
+                  >
+                    Watch Full Demo
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Pricing Section - Kept but updated */}
         <section id="pricing" className="py-20 border-b border-gray-800">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold mb-4 text-center">
@@ -199,7 +575,7 @@ const HomePage = () => {
               {/* Free Tier */}
               <div className="bg-gray-900 p-8 rounded-lg border border-gray-800 flex flex-col h-full">
                 <div className="mb-6">
-                  <h3 className="text-xl font-semibold mb-2">Community</h3>
+                  <h3 className="text-xl font-semibold mb-2">Free</h3>
                   <div className="flex items-end mb-4">
                     <span className="text-4xl font-bold">$0</span>
                     <span className="text-gray-400 ml-2">/ forever</span>
@@ -261,9 +637,7 @@ const HomePage = () => {
                 <ul className="mb-8 flex-grow">
                   <li className="flex items-start mb-4">
                     <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-300">
-                      All Community features
-                    </span>
+                    <span className="text-gray-300">All Free features</span>
                   </li>
                   <li className="flex items-start mb-4">
                     <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
@@ -299,12 +673,6 @@ const HomePage = () => {
                     <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
                     <span className="text-gray-300">Priority support</span>
                   </li>
-                  <li className="flex items-start mb-4">
-                    <Server className="h-5 w-5 text-blue-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-300">
-                      Self-host option available
-                    </span>
-                  </li>
                 </ul>
 
                 <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
@@ -312,71 +680,63 @@ const HomePage = () => {
                 </Button>
               </div>
             </div>
-
-            <div className="mt-12 text-center">
-              <div className="inline-flex items-center px-4 py-2 bg-gray-800 rounded-full">
-                <Globe className="h-4 w-4 text-blue-500 mr-2" />
-                <span className="text-sm">
-                  <span className="font-bold">Open-Source Freedom:</span>
-                  <span className="text-gray-400">
-                    {' '}
-                    Self-host with all Pro features for your personal use
-                  </span>
-                </span>
-              </div>
-            </div>
           </div>
         </section>
 
-        {/* Demo Section */}
-        <section id="demo" className="py-20 border-b border-gray-800">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold mb-4">See It In Action</h2>
-            <p className="text-gray-400 mb-10 max-w-2xl mx-auto">
-              Our AI-powered resume builder helps you craft professional,
-              ATS-friendly resumes in minutes.
-            </p>
-            {/* Placeholder for demo/screenshot */}
-            <div className="bg-gray-800 rounded-lg p-4 h-96 max-w-4xl mx-auto flex items-center justify-center">
-              <p className="text-gray-400">
-                Interactive resume builder demo goes here
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Trust Section */}
-        <section className="py-20">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold mb-8">
-              Built With Trust In Mind
+        {/* FAQ Section - Rezi Style */}
+        <section className="py-20 border-b border-gray-800">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-12 text-center">
+              Frequently Asked Questions
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              <div className="bg-gray-900 p-6 rounded-lg">
-                <div className="h-12 w-12 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Shield className="h-6 w-6 text-green-500" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">GDPR Compliant</h3>
+
+            <div className="max-w-3xl mx-auto">
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold mb-3">
+                  Why would I use an AI resume maker?
+                </h3>
                 <p className="text-gray-400">
-                  All user data handling follows strict GDPR guidelines.
+                  An AI resume maker helps you build a resume perfectly fit for
+                  the job you want. Our AI is designed to speak the language
+                  hiring managers are looking for, increasing your chances of
+                  standing out in the crowd.
                 </p>
               </div>
-              <div className="bg-gray-900 p-6 rounded-lg">
-                <div className="h-12 w-12 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Code className="h-6 w-6 text-purple-500" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Open Source</h3>
+
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold mb-3">
+                  Will employers know I used AI to write a resume?
+                </h3>
                 <p className="text-gray-400">
-                  100% transparent codebase. Audit, modify, and contribute.
+                  Employers might think you used AI, but that&apos;s rarely an
+                  issue. What they really care about is getting a well-written
+                  resume that showcases your skills and experiences accurately.
+                  A top-notch resume tailored to their needs will speak volumes.
                 </p>
               </div>
-              <div className="bg-gray-900 p-6 rounded-lg">
-                <div className="h-12 w-12 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Server className="h-6 w-6 text-blue-500" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Self-Hostable</h3>
+
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold mb-3">
+                  How does Resumate tailor my resume to specific job
+                  descriptions?
+                </h3>
                 <p className="text-gray-400">
-                  Run on your own infrastructure for complete data sovereignty.
+                  Resumate uses AI Keyword Targeting that scans the job
+                  description to identify crucial keywords and naturally
+                  incorporates them into your resume, giving it the right focus
+                  without keyword stuffing.
+                </p>
+              </div>
+
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold mb-3">
+                  Can I use AI to optimize an existing resume?
+                </h3>
+                <p className="text-gray-400">
+                  Yes, you can upload your current resume, share details about
+                  your career goals and the job you want, and let our AI refine
+                  everything to elevate your resume&apos;s impact and ATS
+                  compatibility.
                 </p>
               </div>
             </div>
@@ -391,11 +751,14 @@ const HomePage = () => {
             </h2>
             <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
               Join thousands of job seekers who have already created
-              professional resumes with ResumeAI.
+              professional resumes with Resumate.
             </p>
             <Button size="lg" className="bg-white text-black hover:bg-gray-200">
               Create Your Resume Now
             </Button>
+            <p className="text-sm text-gray-500 mt-4">
+              Free to get started. No credit card required.
+            </p>
           </div>
         </section>
       </main>
@@ -422,23 +785,15 @@ const HomePage = () => {
             </div>
             <div>
               <h3 className="text-sm font-semibold text-white uppercase mb-4">
-                Product
+                AI Tools
               </h3>
               <ul className="space-y-2">
                 <li>
                   <a
-                    href="#features"
+                    href="#"
                     className="text-gray-400 hover:text-white text-sm"
                   >
-                    Features
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#pricing"
-                    className="text-gray-400 hover:text-white text-sm"
-                  >
-                    Pricing
+                    Resume Builder
                   </a>
                 </li>
                 <li>
@@ -446,7 +801,7 @@ const HomePage = () => {
                     href="#"
                     className="text-gray-400 hover:text-white text-sm"
                   >
-                    Templates
+                    Resume Editor
                   </a>
                 </li>
                 <li>
@@ -454,7 +809,15 @@ const HomePage = () => {
                     href="#"
                     className="text-gray-400 hover:text-white text-sm"
                   >
-                    Self-Hosting
+                    Cover Letter Writer
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-gray-400 hover:text-white text-sm"
+                  >
+                    Keyword Scanner
                   </a>
                 </li>
               </ul>
@@ -469,7 +832,7 @@ const HomePage = () => {
                     href="#"
                     className="text-gray-400 hover:text-white text-sm"
                   >
-                    Documentation
+                    Resume Templates
                   </a>
                 </li>
                 <li>
@@ -477,7 +840,7 @@ const HomePage = () => {
                     href="#"
                     className="text-gray-400 hover:text-white text-sm"
                   >
-                    API
+                    Resume Examples
                   </a>
                 </li>
                 <li>
@@ -513,10 +876,10 @@ const HomePage = () => {
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href="#pricing"
                     className="text-gray-400 hover:text-white text-sm"
                   >
-                    Careers
+                    Pricing
                   </a>
                 </li>
                 <li>
@@ -539,7 +902,7 @@ const HomePage = () => {
             </div>
           </div>
           <div className="border-t border-gray-800 pt-8 text-center text-sm text-gray-400">
-            <p>© {new Date().getFullYear()} ResumeAI. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} Resumate. All rights reserved.</p>
             <p className="mt-2">Made with 💙 by the open source community.</p>
           </div>
         </div>

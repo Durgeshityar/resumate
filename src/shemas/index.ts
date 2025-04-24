@@ -33,8 +33,38 @@ export const workExperienceSchema = z.object({
       z.object({
         position: optionalString,
         company: optionalString,
-        startDate: optionalString,
-        endDate: optionalString,
+        startDate: z
+          .string()
+          .trim()
+          .optional()
+          .or(z.literal(''))
+          .refine(
+            (val) => {
+              if (!val) return true
+              // Check if the date is in YYYY-MM-DD format
+              if (!/^\d{4}-\d{2}-\d{2}$/.test(val)) return false
+              // Check if the date is valid
+              const date = new Date(val)
+              return !isNaN(date.getTime())
+            },
+            { message: 'Invalid date format. Use YYYY-MM-DD' }
+          ),
+        endDate: z
+          .string()
+          .trim()
+          .optional()
+          .or(z.literal(''))
+          .refine(
+            (val) => {
+              if (!val) return true
+              // Check if the date is in YYYY-MM-DD format
+              if (!/^\d{4}-\d{2}-\d{2}$/.test(val)) return false
+              // Check if the date is valid
+              const date = new Date(val)
+              return !isNaN(date.getTime())
+            },
+            { message: 'Invalid date format. Use YYYY-MM-DD' }
+          ),
         description: optionalString,
       })
     )
@@ -54,8 +84,38 @@ export const projectSchema = z.object({
         title: optionalString,
         organisationName: optionalString,
         projectUrl: optionalString,
-        startDate: optionalString,
-        endDate: optionalString,
+        startDate: z
+          .string()
+          .trim()
+          .optional()
+          .or(z.literal(''))
+          .refine(
+            (val) => {
+              if (!val) return true
+              // Check if the date is in YYYY-MM-DD format
+              if (!/^\d{4}-\d{2}-\d{2}$/.test(val)) return false
+              // Check if the date is valid
+              const date = new Date(val)
+              return !isNaN(date.getTime())
+            },
+            { message: 'Invalid date format. Use YYYY-MM-DD' }
+          ),
+        endDate: z
+          .string()
+          .trim()
+          .optional()
+          .or(z.literal(''))
+          .refine(
+            (val) => {
+              if (!val) return true
+              // Check if the date is in YYYY-MM-DD format
+              if (!/^\d{4}-\d{2}-\d{2}$/.test(val)) return false
+              // Check if the date is valid
+              const date = new Date(val)
+              return !isNaN(date.getTime())
+            },
+            { message: 'Invalid date format. Use YYYY-MM-DD' }
+          ),
         description: optionalString,
       })
     )
@@ -105,8 +165,38 @@ export const educationSchema = z.object({
       z.object({
         degree: optionalString,
         school: optionalString,
-        startDate: optionalString,
-        endDate: optionalString,
+        startDate: z
+          .string()
+          .trim()
+          .optional()
+          .or(z.literal(''))
+          .refine(
+            (val) => {
+              if (!val) return true
+              // Check if the date is in YYYY-MM-DD format
+              if (!/^\d{4}-\d{2}-\d{2}$/.test(val)) return false
+              // Check if the date is valid
+              const date = new Date(val)
+              return !isNaN(date.getTime())
+            },
+            { message: 'Invalid date format. Use YYYY-MM-DD' }
+          ),
+        endDate: z
+          .string()
+          .trim()
+          .optional()
+          .or(z.literal(''))
+          .refine(
+            (val) => {
+              if (!val) return true
+              // Check if the date is in YYYY-MM-DD format
+              if (!/^\d{4}-\d{2}-\d{2}$/.test(val)) return false
+              // Check if the date is valid
+              const date = new Date(val)
+              return !isNaN(date.getTime())
+            },
+            { message: 'Invalid date format. Use YYYY-MM-DD' }
+          ),
       })
     )
     .optional(),

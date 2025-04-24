@@ -3,7 +3,6 @@
 import { FileText, PlusSquare } from 'lucide-react'
 import Link from 'next/link'
 
-import { Button } from '@/components/ui/button'
 import usePremiumModal from '@/hooks/use-premium-model'
 
 interface HeroSectionProps {
@@ -22,39 +21,57 @@ export default function HeroSection({
   }
 
   return (
-    <div className="relative isolate overflow-hidden bg-gradient-to-b from-secondary/50 to-background rounded-xl p-6 mb-8 bg-blue-500">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:mx-0">
-          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-4">
-            Your Professional Journey Starts Here
-          </h1>
-          <p className="text-lg leading-8 text-muted-foreground mb-8">
-            Create stunning resumes and matching cover letters that help you
-            stand out. You have created {totalResumes}{' '}
-            {totalResumes === 1 ? 'resume' : 'resumes'} so far.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4">
-            {canCreate ? (
-              <Button size="lg" className="gap-2" asChild>
-                <Link href="/editor">
-                  <PlusSquare className="size-5" />
-                  Create New Resume
-                </Link>
-              </Button>
-            ) : (
-              <Button size="lg" className="gap-2" onClick={handlePremiumClick}>
-                <PlusSquare className="size-5" />
-                Create New Resume
-              </Button>
-            )}
-            <Button size="lg" variant="outline" className="gap-2" asChild>
-              <Link href="/cover-letters">
-                <FileText className="size-5" />
-                Generate Cover Letter
-              </Link>
-            </Button>
-          </div>
-        </div>
+    <div className="relative isolate overflow-hidden rounded-3xl px-6 py-16 mb-12 text-center bg-gradient-to-tr from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-900 dark:via-indigo-900 dark:to-purple-900">
+      {/* Decorative background blobs */}
+      <div className="absolute inset-0 -z-10">
+        <svg
+          viewBox="0 0 1024 1024"
+          className="absolute top-[-10%] left-[-10%] w-[60%] opacity-20 blur-3xl text-blue-300"
+          fill="currentColor"
+        >
+          <circle cx="512" cy="512" r="512" />
+        </svg>
+        <svg
+          viewBox="0 0 1024 1024"
+          className="absolute bottom-[-10%] right-[-10%] w-[50%] opacity-20 blur-3xl text-indigo-300"
+          fill="currentColor"
+        >
+          <polygon points="512,0 1024,1024 0,1024" />
+        </svg>
+      </div>
+      <h1 className="mx-auto max-w-2xl text-5xl font-extrabold tracking-tight leading-tight text-gray-900 sm:text-6xl dark:text-white">
+        Your Professional Journey, Amplified
+      </h1>
+      <p className="mx-auto mt-4 max-w-xl text-lg text-gray-500 dark:text-gray-400">
+        Generate top-tier resumes and cover letters in seconds powered by AI.
+        You have crafted {totalResumes}{' '}
+        {totalResumes === 1 ? 'resume' : 'resumes'} so far.
+      </p>
+      <div className="mt-8 flex flex-wrap justify-center gap-4">
+        {canCreate ? (
+          <Link
+            href="/editor"
+            className="inline-flex items-center rounded-full bg-black px-6 py-3 text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:bg-white dark:text-black dark:hover:bg-gray-100"
+          >
+            <PlusSquare className="mr-2 h-5 w-5" />
+            Create Resume
+          </Link>
+        ) : (
+          <button
+            onClick={handlePremiumClick}
+            className="inline-flex items-center rounded-full bg-black px-6 py-3 text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:bg-white dark:text-black dark:hover:bg-gray-100"
+          >
+            <PlusSquare className="mr-2 h-5 w-5" />
+            Create Resume
+          </button>
+        )}
+        <Link
+          href="/cover-letters"
+          className="inline-flex items-center rounded-full bg-transparent px-6 py-3 text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:text-white dark:hover:bg-gray-800"
+        >
+          <FileText className="mr-2 h-5 w-5" />
+          Cover Letter
+        </Link>
       </div>
     </div>
   )

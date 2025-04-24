@@ -163,10 +163,13 @@ function WorkExperienceSection({ resumeData }: ResumeSectionProps) {
               style={{ color: colorHex }}
             >
               <span>{exp.position}</span>
-              {exp.startDate && (
+              {exp.startDate && typeof exp.startDate === 'string' && (
                 <span>
-                  {formatDateString(exp.startDate)} -{' '}
-                  {exp.endDate ? formatDateString(exp.endDate) : 'Present'}
+                  {formatDateString(exp.startDate)}
+                  {' - '}
+                  {exp.endDate && typeof exp.endDate === 'string'
+                    ? formatDateString(exp.endDate)
+                    : 'Present'}
                 </span>
               )}
             </div>
@@ -204,10 +207,13 @@ function ProjectsSection({ resumeData }: ResumeSectionProps) {
               style={{ color: colorHex }}
             >
               <span>{proj?.title}</span>
-              {proj?.startDate && (
+              {proj?.startDate && typeof proj.startDate === 'string' && (
                 <span>
-                  {formatDateString(proj.startDate)} -{' '}
-                  {proj.endDate ? formatDateString(proj.endDate) : 'Present'}
+                  {formatDateString(proj.startDate)}
+                  {' - '}
+                  {proj.endDate && typeof proj.endDate === 'string'
+                    ? formatDateString(proj.endDate)
+                    : 'Present'}
                 </span>
               )}
             </div>
@@ -259,7 +265,9 @@ function CertificatesSection({ resumeData }: ResumeSectionProps) {
               style={{ color: colorHex }}
             >
               <span>{cert?.title}</span>
-              {cert?.duration && <span>{formatDateString(cert.duration)}</span>}
+              {cert?.duration && typeof cert.duration === 'string' && (
+                <span>{formatDateString(cert.duration)}</span>
+              )}
             </div>
             <p className="text-xs font-semibold">{cert?.source}</p>
             <div className="whitespace-pre-line text-xs">
@@ -299,7 +307,7 @@ function CourseworkSection({ resumeData }: ResumeSectionProps) {
               style={{ color: colorHex }}
             >
               <span>{course?.title}</span>
-              {course?.duration && (
+              {course?.duration && typeof course.duration === 'string' && (
                 <span>{formatDateString(course.duration)}</span>
               )}
             </div>
@@ -346,10 +354,13 @@ function EducationSection({ resumeData }: ResumeSectionProps) {
               style={{ color: colorHex }}
             >
               <span>{edu.degree}</span>
-              {edu.startDate && (
+              {edu.startDate && typeof edu.startDate === 'string' && (
                 <span>
-                  {formatDateString(edu.startDate)} -{' '}
-                  {edu.endDate ? formatDateString(edu.endDate) : 'Present'}
+                  {formatDateString(edu.startDate)}
+                  {' - '}
+                  {edu.endDate && typeof edu.endDate === 'string'
+                    ? formatDateString(edu.endDate)
+                    : 'Present'}
                 </span>
               )}
             </div>
@@ -398,19 +409,43 @@ function SkillsSection({ resumeData }: ResumeSectionProps) {
   )
 }
 
-function formatDateString(dateString: string) {
-  if (dateString.endsWith('GM')) {
-    dateString = dateString + 'T'
+function formatDateString(dateInput: unknown): string {
+  // Handle non-string inputs
+  if (dateInput === null || dateInput === undefined) return ''
+
+  // If it's already a string, use it directly
+  const dateString =
+    typeof dateInput === 'string' ? dateInput : String(dateInput)
+
+  if (dateString === '') return ''
+
+  // Handle only ISO date strings (YYYY-MM-DD)
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+    try {
+      const parsedDate = new Date(dateString)
+      if (isValid(parsedDate)) {
+        return formatDate(parsedDate, 'MM/yyyy')
+      }
+    } catch (error) {
+      console.error('Date parsing error:', error)
+      return ''
+    }
   }
 
-  let parsedDate
-
+  // For other date string formats, try more carefully
   try {
-    parsedDate = new Date(dateString)
-  } catch {
-    return 'Invalid Date'
-  }
+    let dateToProcess = dateString
+    if (dateToProcess.endsWith('GM')) {
+      dateToProcess = dateToProcess + 'T'
+    }
 
-  if (!isValid(parsedDate)) return 'Invalid Date'
-  return formatDate(parsedDate, 'MM/yyyy')
+    const parsedDate = new Date(dateToProcess)
+    if (!isValid(parsedDate)) {
+      return ''
+    }
+    return formatDate(parsedDate, 'MM/yyyy')
+  } catch (error) {
+    console.error('Date parsing error:', error)
+    return ''
+  }
 }

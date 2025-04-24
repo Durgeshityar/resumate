@@ -35,7 +35,13 @@ model User {
   twoFactorConfirmation TwoFactorConfirmation?
   Subscription          Subscription?
 
-  resumes Resume[]
+  resumes      Resume[]
+  coverLetters CoverLetter[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
 }
 
 model Subscription {
@@ -80,6 +86,7 @@ model Resume {
   Certificate     Certificate[]
   skills          String[]
   CourseWork      CourseWork[]
+  coverLetters    CoverLetter[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -228,4 +235,24 @@ model TwoFactorConfirmation {
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId])
+}
+
+model CoverLetter {
+  id String @id @default(cuid())
+
+  title       String
+  content     String @db.Text
+  jobTitle    String
+  companyName String
+
+  resumeId String
+  resume   Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("cover_letters")
 }

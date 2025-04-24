@@ -236,7 +236,18 @@ function ProjectItem({ form, index, remove, id }: ProjectItemProps) {
                     const value = e.target.value
                     // Ensure we're storing a properly formatted date string
                     if (value) {
-                      field.onChange(value)
+                      // Validate the date format (YYYY-MM-DD)
+                      if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+                        const date = new Date(value)
+                        // Check if it's a valid date
+                        if (!isNaN(date.getTime())) {
+                          field.onChange(value)
+                        } else {
+                          field.onChange('')
+                        }
+                      } else {
+                        field.onChange('')
+                      }
                     } else {
                       field.onChange('')
                     }
@@ -263,7 +274,18 @@ function ProjectItem({ form, index, remove, id }: ProjectItemProps) {
                     const value = e.target.value
                     // Ensure we're storing a properly formatted date string
                     if (value) {
-                      field.onChange(value)
+                      // Validate the date format (YYYY-MM-DD)
+                      if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+                        const date = new Date(value)
+                        // Check if it's a valid date
+                        if (!isNaN(date.getTime())) {
+                          field.onChange(value)
+                        } else {
+                          field.onChange('')
+                        }
+                      } else {
+                        field.onChange('')
+                      }
                     } else {
                       field.onChange('')
                     }

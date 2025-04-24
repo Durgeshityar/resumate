@@ -46,20 +46,20 @@ export default function ResumeItem({ resume }: ResumeItemProps) {
   const wasUpdated = resume.updatedAt !== resume.createdAt
 
   return (
-    <div className="group relative overflow-hidden rounded-xl border bg-card transition-all hover:shadow-lg">
-      <div className="space-y-3 p-4">
+    <div className="group relative overflow-hidden rounded-lg border bg-card transition-all hover:shadow-md">
+      <div className="space-y-2 p-3">
         <div className="flex items-start justify-between">
           <div>
             <Link
               href={`/editor?resumeId=${resume.id}`}
               className="inline-block"
             >
-              <h3 className="font-semibold line-clamp-1 hover:text-primary transition-colors">
+              <h3 className="text-sm font-semibold line-clamp-1 hover:text-primary transition-colors">
                 {resume.title || 'Untitled'}
               </h3>
             </Link>
-            <div className="flex items-center gap-2 mt-1">
-              <Badge variant="secondary" className="text-xs">
+            <div className="flex items-center gap-2 mt-0.5">
+              <Badge variant="secondary" className="text-[10px]">
                 {wasUpdated ? 'Updated' : 'Created'}{' '}
                 {formatDate(resume.updatedAt, 'MMM d, yyyy')}
               </Badge>
@@ -69,36 +69,41 @@ export default function ResumeItem({ resume }: ResumeItemProps) {
         </div>
 
         {resume.description && (
-          <p className="line-clamp-2 text-sm text-muted-foreground">
+          <p className="line-clamp-1 text-xs text-muted-foreground">
             {resume.description}
           </p>
         )}
 
         <Link
           href={`/editor?resumeId=${resume.id}`}
-          className="block relative aspect-[1/1.4] overflow-hidden rounded-lg border"
+          className="block relative aspect-[1/1.3] overflow-hidden rounded-md border"
         >
           <ResumePreview
             resumeData={mapToResumeValues(resume)}
             contentRef={contentRef}
-            className="transform transition-transform duration-300 group-hover:scale-105"
+            className="transform scale-90 transition-transform duration-300 group-hover:scale-95"
           />
-          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background/80 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-background/80 to-transparent" />
         </Link>
 
-        <div className="flex items-center gap-2 pt-2">
+        <div className="flex items-center gap-2 pt-1">
           <Button
             variant="outline"
             size="sm"
-            className="flex-1 gap-2"
+            className="flex-1 gap-1 h-7 text-xs"
             onClick={() => reactToPrintFn()}
           >
-            <Printer className="size-4" />
+            <Printer className="size-3" />
             Print
           </Button>
-          <Button variant="outline" size="sm" className="flex-1 gap-2" asChild>
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1 gap-1 h-7 text-xs"
+            asChild
+          >
             <Link href={`/cover-letters/new?resumeId=${resume.id}`}>
-              <FileText className="size-4" />
+              <FileText className="size-3" />
               Cover Letter
             </Link>
           </Button>
@@ -122,23 +127,23 @@ function MoreMenu({ resumeId, onPrintClick }: MoreMenuProps) {
           <Button
             variant={'ghost'}
             size={'icon'}
-            className=" absolute right-0.5 top-0.5 opacity-0 transition-opacity group-hover:opacity-100"
+            className="absolute right-0.5 top-0.5 opacity-0 transition-opacity group-hover:opacity-100 h-6 w-6"
           >
-            <MoreVertical className="size-4" />
+            <MoreVertical className="size-3" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem
-            className=" flex items-center gap-2"
+            className="flex items-center gap-2 text-xs"
             onClick={() => setShowDeleteConfirmation(true)}
           >
-            <Trash2 className="size-4" /> Delete
+            <Trash2 className="size-3" /> Delete
           </DropdownMenuItem>
           <DropdownMenuItem
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 text-xs"
             onClick={onPrintClick}
           >
-            <Printer className="size-4" />
+            <Printer className="size-3" />
             Print
           </DropdownMenuItem>
         </DropdownMenuContent>

@@ -9,6 +9,7 @@ import SummaryForm from './forms/summary-from'
 import ProjectForm from './forms/projects-form'
 import CertificateForm from './forms/certificate-form'
 import CourseworkForm from './forms/course-work'
+import AtsScore from './ats-score'
 
 export const steps: {
   title: string
@@ -52,5 +53,10 @@ export const steps: {
     title: 'Summary',
     component: SummaryForm,
     key: 'summary',
+  },
+  {
+    title: 'ATS Review',
+    component: AtsScore,
+    key: 'ats-score',
   },
 ]

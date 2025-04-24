@@ -36,34 +36,34 @@ export function mapToResumeValues(data: ResumeServerData): ResumeValues {
     workExperiences: (data.workExperiences || []).map((exp) => ({
       position: exp.position || undefined,
       company: exp.company || undefined,
-      startDate: exp.startDate?.toString().split('T')[0],
-      endDate: exp.endDate?.toString().split('T')[0],
+      startDate: formatDateForInput(exp.startDate),
+      endDate: formatDateForInput(exp.endDate),
       description: exp.description || undefined,
     })),
     educations: (data.educations || []).map((edu) => ({
       degree: edu.degree || undefined,
       school: edu.school || undefined,
-      startDate: edu.startDate?.toString().split('T')[0],
-      endDate: edu.endDate?.toString().split('T')[0],
+      startDate: formatDateForInput(edu.startDate),
+      endDate: formatDateForInput(edu.endDate),
     })),
     projects: (data.projects || []).map((proj) => ({
       title: proj.title || undefined,
       description: proj.description || undefined,
-      startDate: proj.startDate?.toString().split('T')[0],
-      endDate: proj.endDate?.toString().split('T')[0],
+      startDate: formatDateForInput(proj.startDate),
+      endDate: formatDateForInput(proj.endDate),
       organisationName: proj.organisationName || undefined,
       projectUrl: proj.projectUrl || undefined,
     })),
     certificates: (data.Certificate || []).map((cert) => ({
       title: cert.title || undefined,
       source: cert.source || undefined,
-      duration: cert.duration?.toString() || undefined,
+      duration: formatDateForInput(cert.duration),
       description: cert.description || undefined,
     })),
     CourseWork: (data.CourseWork || []).map((course) => ({
       title: course.title || undefined,
       source: course.source || undefined,
-      duration: course.duration?.toString() || undefined,
+      duration: formatDateForInput(course.duration),
       skills: course.skills || undefined,
       description: course.description || undefined,
     })),
@@ -71,5 +71,30 @@ export function mapToResumeValues(data: ResumeServerData): ResumeValues {
     borderStyle: data.borderStyle,
     summary: data.summary || undefined,
     colorHex: data.colorHex,
+  }
+}
+
+// Helper function to format dates as YYYY-MM-DD for input fields
+export function formatDateForInput(
+  date: Date | string | null | undefined
+): string {
+  if (!date) return ''
+
+  try {
+    // If it's already a string, try to parse it
+    const dateObj = typeof date === 'string' ? new Date(date) : date
+
+    // Check if the date is valid
+    if (isNaN(dateObj.getTime())) return ''
+
+    // Format as YYYY-MM-DD
+    const year = dateObj.getFullYear()
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0')
+    const day = String(dateObj.getDate()).padStart(2, '0')
+
+    return `${year}-${month}-${day}`
+  } catch (error) {
+    console.error('Error formatting date:', error)
+    return ''
   }
 }
