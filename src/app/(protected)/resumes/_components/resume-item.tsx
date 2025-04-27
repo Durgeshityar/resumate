@@ -30,6 +30,7 @@ import {
 } from '@/components/ui/dialog'
 import LoadingButton from '@/components/loading-button'
 import { Badge } from '@/components/ui/badge'
+import { useSubscription } from '@/hooks/use-subscription'
 
 interface ResumeItemProps {
   resume: ResumeServerData
@@ -37,6 +38,8 @@ interface ResumeItemProps {
 
 export default function ResumeItem({ resume }: ResumeItemProps) {
   const contentRef = useRef<HTMLDivElement>(null)
+
+  const { subscriptionActions, isSubscribed } = useSubscription()
 
   const reactToPrintFn = useReactToPrint({
     contentRef,
@@ -96,17 +99,29 @@ export default function ResumeItem({ resume }: ResumeItemProps) {
             <Printer className="size-3" />
             Print
           </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex-1 gap-1 h-7 text-xs"
-            asChild
-          >
-            <Link href={`/cover-letters/new?resumeId=${resume.id}`}>
+          {isSubscribed ? (
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex-1 gap-1 h-7 text-xs"
+              asChild
+            >
+              <Link href={`/cover-letters/new?resumeId=${resume.id}`}>
+                <FileText className="size-3" />
+                Cover Letter
+              </Link>
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex-1 gap-1 h-7 text-xs"
+              onClick={subscriptionActions.openPremiumModal}
+            >
               <FileText className="size-3" />
               Cover Letter
-            </Link>
-          </Button>
+            </Button>
+          )}
         </div>
       </div>
     </div>

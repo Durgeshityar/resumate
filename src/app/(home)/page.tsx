@@ -1,10 +1,10 @@
+'use client'
+
 import React from 'react'
-import { Button } from '@/components/ui/button' // Assuming you have a Button component setup with Shadcn/ui or similar
+import { Button } from '@/components/ui/button'
 import {
   Github,
-  Check,
   ChevronRight,
-  Server,
   Star,
   FileText,
   Target,
@@ -20,11 +20,21 @@ import {
 } from 'lucide-react' // Example icons
 
 import { Doto } from 'next/font/google'
+import Link from 'next/link'
+import handlePayment from '@/lib/handle-payment'
+import { PlanType } from '@prisma/client'
+import { useCurrentUser } from '@/hooks/use-current-user'
 
-const doto = Doto({
+export const doto = Doto({
   weight: '800',
   subsets: ['latin'],
 })
+
+const MONTHLY_PRICE = 29
+const YEARLY_PRICE = 140
+const MONTHLY_SAVINGS = Math.round(
+  (1 - YEARLY_PRICE / (MONTHLY_PRICE * 12)) * 100
+)
 
 export const Logo = () => {
   return (
@@ -34,7 +44,8 @@ export const Logo = () => {
   )
 }
 
-const HomePage = () => {
+export const HomePage = () => {
+  const user = useCurrentUser()
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
       <header className="border-b border-gray-800 py-4">
@@ -64,12 +75,23 @@ const HomePage = () => {
             </a>
           </nav>
           <div>
-            <Button
-              variant="outline"
-              className="border-gray-700 text-black hover:text-white hover:bg-gray-800"
-            >
-              Sign In
-            </Button>
+            {user ? (
+              <Button
+                variant="outline"
+                className="border-gray-700 text-black hover:text-white hover:bg-gray-800"
+              >
+                Dashboard
+              </Button>
+            ) : (
+              <Link href="/auth/login">
+                <Button
+                  variant="outline"
+                  className="border-gray-700 text-black hover:text-white hover:bg-gray-800"
+                >
+                  Sign In
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </header>
@@ -93,13 +115,28 @@ const HomePage = () => {
               your data, customize every template, and land your dream job.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
-              <Button
-                size="lg"
-                className="bg-white text-black hover:bg-gray-200 transition-all"
-              >
-                Create Your Resume
-                <ChevronRight className="ml-2 h-4 w-4" />
-              </Button>
+              {user ? (
+                <Link href="/resumes">
+                  <Button
+                    size="lg"
+                    className="bg-white text-black hover:bg-gray-200 transition-all"
+                  >
+                    Create Your Resume
+                    <ChevronRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              ) : (
+                <Link href="/auth/login">
+                  <Button
+                    size="lg"
+                    className="bg-white text-black hover:bg-gray-200 transition-all"
+                  >
+                    Create Your Resume
+                    <ChevronRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              )}
+
               <Button
                 size="lg"
                 variant="outline"
@@ -267,7 +304,7 @@ const HomePage = () => {
                 <div className="h-12 w-12 bg-orange-900/30 rounded-lg flex items-center justify-center mb-6">
                   <Award className="h-6 w-6 text-orange-500" />
                 </div>
-                <h3 className="text-2xl font-semibold mb-4">Rezi Score</h3>
+                <h3 className="text-2xl font-semibold mb-4">Resumate Score</h3>
                 <p className="text-gray-400 mb-6">
                   Get your resume rated across 23 key metrics that help you pass
                   Applicant Tracking Systems and impress recruiters.
@@ -295,69 +332,7 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* Resume Examples - Rezi Style */}
-        <section id="examples" className="py-20 border-b border-gray-800">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-8 text-center">
-              Real-life successful resume examples
-            </h2>
-            <p className="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
-              Browse our professional resume samples and find one for your job
-              title. Learn what matters most in your industry & create a
-              job-winning resume.
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-              {/* Example 1 */}
-              <div className="bg-gray-900 rounded-lg overflow-hidden">
-                <div className="h-64 bg-gray-800 flex items-center justify-center">
-                  <FileText className="h-16 w-16 text-gray-700" />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-semibold mb-1">IT Project Manager</h3>
-                  <p className="text-gray-400 text-sm">
-                    Information Technology
-                  </p>
-                </div>
-              </div>
-
-              {/* Example 2 */}
-              <div className="bg-gray-900 rounded-lg overflow-hidden">
-                <div className="h-64 bg-gray-800 flex items-center justify-center">
-                  <FileText className="h-16 w-16 text-gray-700" />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-semibold mb-1">Marketing Specialist</h3>
-                  <p className="text-gray-400 text-sm">
-                    Marketing & Communications
-                  </p>
-                </div>
-              </div>
-
-              {/* Example 3 */}
-              <div className="bg-gray-900 rounded-lg overflow-hidden">
-                <div className="h-64 bg-gray-800 flex items-center justify-center">
-                  <FileText className="h-16 w-16 text-gray-700" />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-semibold mb-1">UX Designer</h3>
-                  <p className="text-gray-400 text-sm">Design</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="text-center">
-              <Button
-                variant="outline"
-                className="border-gray-700 text-white hover:text-white hover:bg-gray-800"
-              >
-                View All Examples
-              </Button>
-            </div>
-          </div>
-        </section>
-
-        {/* Testimonials - Rezi Style */}
+        {/* Testimonials  */}
         <section className="py-20 border-b border-gray-800">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold mb-12 text-center">
@@ -512,11 +487,12 @@ const HomePage = () => {
                 <div>
                   <h3 className="text-xl font-semibold mb-3 flex items-center">
                     <Target className="h-5 w-5 text-blue-500 mr-2" />
-                    Smart Templates
+                    ATS Optimization
                   </h3>
                   <p className="text-gray-400">
-                    Choose from ATS-optimized templates designed to pass through
-                    applicant tracking systems and impress hiring managers.
+                    Our resume builder automatically formats your content to
+                    pass through applicant tracking systems and impress hiring
+                    managers.
                   </p>
                 </div>
 
@@ -544,15 +520,11 @@ const HomePage = () => {
                 </div>
 
                 <div className="pt-4">
-                  <Button className="bg-white text-black hover:bg-gray-200">
-                    Try It Now
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="ml-4 border-gray-700 text-white hover:bg-gray-800"
-                  >
-                    Watch Full Demo
-                  </Button>
+                  <Link href="/auth/login">
+                    <Button className="bg-white text-black hover:bg-gray-200">
+                      Try It Now
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -565,120 +537,107 @@ const HomePage = () => {
             <h2 className="text-3xl font-bold mb-4 text-center">
               Choose Your Plan
             </h2>
-            <p className="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
-              Whether you&apos;re a job seeker on a budget or need advanced
-              features, we have options for you. Always open-source, always
-              yours.
+            <p className="text-gray-400 text-center mb-8 max-w-2xl mx-auto">
+              Satisfaction promised with a 100% money back guarantee
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {/* Free Tier */}
-              <div className="bg-gray-900 p-8 rounded-lg border border-gray-800 flex flex-col h-full">
+              <div className="bg-white text-black p-8 rounded-lg flex flex-col h-full">
                 <div className="mb-6">
-                  <h3 className="text-xl font-semibold mb-2">Free</h3>
-                  <div className="flex items-end mb-4">
-                    <span className="text-4xl font-bold">$0</span>
-                    <span className="text-gray-400 ml-2">/ forever</span>
-                  </div>
-                  <p className="text-gray-400">
-                    Perfect for job seekers and open-source contributors.
+                  <h3 className="text-2xl font-semibold mb-4">
+                    No card required
+                  </h3>
+                  <p className="text-gray-600 mb-8">
+                    Get a feel for how it works. Experience the power of
+                    AI-driven resume building.
                   </p>
                 </div>
 
-                <ul className="mb-8 flex-grow">
-                  <li className="flex items-start mb-4">
-                    <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-300">
-                      Up to 3 resume templates
-                    </span>
-                  </li>
-                  <li className="flex items-start mb-4">
-                    <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-300">Basic AI suggestions</span>
-                  </li>
-                  <li className="flex items-start mb-4">
-                    <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-300">Export to PDF</span>
-                  </li>
-                  <li className="flex items-start mb-4">
-                    <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-300">GitHub integration</span>
-                  </li>
-                  <li className="flex items-start mb-4">
-                    <Server className="h-5 w-5 text-blue-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-300">
-                      Self-host option available
-                    </span>
-                  </li>
-                </ul>
+                <div className="mt-auto mb-8">
+                  <h3 className="text-6xl font-bold mb-8">Free</h3>
+                </div>
 
-                <Button className="w-full bg-white text-black hover:bg-gray-200">
-                  Get Started Free
-                </Button>
+                {user ? (
+                  <Link href="/resumes">
+                    <Button className="w-full bg-gray-200 text-black hover:bg-gray-300 font-semibold">
+                      Get started
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link href="/auth/login">
+                    <Button className="w-full bg-gray-200 text-black hover:bg-gray-300 font-semibold">
+                      Get started
+                    </Button>
+                  </Link>
+                )}
               </div>
 
               {/* Pro Tier */}
-              <div className="bg-gradient-to-b from-gray-900 to-black p-8 rounded-lg border border-blue-500/50 flex flex-col h-full relative">
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-500 text-xs font-bold px-3 py-1 rounded-full">
-                  RECOMMENDED
-                </div>
-
+              <div className="bg-gradient-to-b from-blue-900 to-indigo-900 text-white p-8 rounded-lg flex flex-col h-full">
                 <div className="mb-6">
-                  <h3 className="text-xl font-semibold mb-2">Pro</h3>
-                  <div className="flex items-end mb-4">
-                    <span className="text-4xl font-bold">$9</span>
-                    <span className="text-gray-400 ml-2">/ month</span>
-                  </div>
-                  <p className="text-gray-400">
-                    For serious job seekers and professionals.
+                  <h3 className="text-2xl font-semibold mb-4">
+                    ${MONTHLY_PRICE} Monthly
+                  </h3>
+                  <p className="text-gray-200 mb-8">
+                    Access to basic features plus cover letter builder with
+                    unlimited AI credits.
                   </p>
                 </div>
 
-                <ul className="mb-8 flex-grow">
-                  <li className="flex items-start mb-4">
-                    <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-300">All Free features</span>
-                  </li>
-                  <li className="flex items-start mb-4">
-                    <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-300">
-                      Unlimited resume templates
-                    </span>
-                  </li>
-                  <li className="flex items-start mb-4">
-                    <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-300">
-                      Advanced AI optimization
-                    </span>
-                  </li>
-                  <li className="flex items-start mb-4">
-                    <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-300">
-                      ATS optimization analysis
-                    </span>
-                  </li>
-                  <li className="flex items-start mb-4">
-                    <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-300">
-                      Cover letter generator
-                    </span>
-                  </li>
-                  <li className="flex items-start mb-4">
-                    <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-300">
-                      Job application tracker
-                    </span>
-                  </li>
-                  <li className="flex items-start mb-4">
-                    <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-300">Priority support</span>
-                  </li>
-                </ul>
+                <div className="mt-auto mb-8">
+                  <h3 className="text-6xl font-bold mb-8">Pro</h3>
+                </div>
 
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                  Upgrade to Pro
+                <Button
+                  className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold mb-4"
+                  onClick={() =>
+                    handlePayment({ subscription: PlanType.MONTHLY })
+                  }
+                >
+                  Get started
                 </Button>
               </div>
+
+              {/* Yearly Tier */}
+              <div className="relative bg-gradient-to-b from-blue-500 to-purple-600 text-white p-8 rounded-lg flex flex-col h-full transform hover:scale-105 transition-all duration-300 shadow-xl border-2 border-blue-400">
+                <div className="absolute -top-4 right-0 left-0 mx-auto w-fit px-4 py-1 bg-yellow-400 text-black font-bold rounded-full text-sm">
+                  BEST VALUE • Save {MONTHLY_SAVINGS}%
+                </div>
+                <div className="mb-6">
+                  <h3 className="text-2xl font-semibold mb-4">
+                    ${YEARLY_PRICE} One-Time
+                  </h3>
+                  <p className="text-gray-100 mb-8">
+                    Access to all Resuamate features{' '}
+                    <span className="font-bold">forever</span> with a one-time
+                    payment. No recurring charges.
+                  </p>
+                </div>
+
+                <div className="mt-auto mb-8">
+                  <h3 className="text-6xl font-bold mb-8">Lifetime</h3>
+                </div>
+
+                <Button
+                  className="w-full bg-white text-black hover:bg-gray-100 font-semibold mb-4 text-lg"
+                  onClick={() =>
+                    handlePayment({ subscription: PlanType.YEARLY })
+                  }
+                >
+                  Get Lifetime Access
+                </Button>
+              </div>
+            </div>
+
+            <div className="mt-8 text-center text-gray-400 max-w-2xl mx-auto">
+              <p>
+                Want to self-host? Use your own API keys and run Resumate for
+                free on your own infrastructure.
+                <a href="#" className="text-blue-500 hover:text-blue-400 ml-1">
+                  Learn more about self-hosting
+                </a>
+              </p>
             </div>
           </div>
         </section>
@@ -753,9 +712,14 @@ const HomePage = () => {
               Join thousands of job seekers who have already created
               professional resumes with Resumate.
             </p>
-            <Button size="lg" className="bg-white text-black hover:bg-gray-200">
-              Create Your Resume Now
-            </Button>
+            <Link href="/auth/login">
+              <Button
+                size="lg"
+                className="bg-white text-black hover:bg-gray-200"
+              >
+                Create Your Resume Now
+              </Button>
+            </Link>
             <p className="text-sm text-gray-500 mt-4">
               Free to get started. No credit card required.
             </p>

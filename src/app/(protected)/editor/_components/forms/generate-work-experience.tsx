@@ -5,6 +5,7 @@ import { toast } from 'sonner'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { generateWorkExperience } from '@/actions/ai/ai-features'
+import { useSubscription } from '@/hooks/use-subscription'
 
 import {
   GenerateWorkExperienceInput,
@@ -39,24 +40,45 @@ export default function GenerateWorkExperienceButton({
 }: GenerateWorkExperienceButtonProps) {
   const [showInputDialog, setShowInputDialog] = useState(false)
 
+  const { isSubscribed, credits, isFeatureAvailable, subscriptionActions } =
+    useSubscription()
+
   return (
     <>
       <Button
         variant={'outline'}
         type="button"
-        // todo : block for non premium users
-        onClick={() => setShowInputDialog(true)}
+        disabled={!isFeatureAvailable}
+        onClick={async () => {
+          const canProceed = await subscriptionActions.useFeature()
+          if (canProceed) {
+            setShowInputDialog(true)
+          }
+        }}
+        className="relative"
       >
-        <WandSparklesIcon className="size-4" />
+        <WandSparklesIcon className="size-4 mr-2" />
         Smart fill (AI)
+        {!isSubscribed && credits >= 0 && (
+          <div className="ml-2 text-xs bg-primary/20 px-1.5 py-0.5 rounded-md">
+            {credits} credit{credits !== 1 ? 's' : ''}
+          </div>
+        )}
       </Button>
       <InputDialog
         open={showInputDialog}
         onOpenChange={setShowInputDialog}
-        onWorkExperienceGenerated={(workExperience) => {
+        onWorkExperienceGenerated={async (workExperience) => {
+          // Attempt to use the feature (handle credit deduction)
+          const canProceed = await subscriptionActions.useFeature()
+          if (!canProceed) {
+            return
+          }
+
           onWorkExperienceGenerated(workExperience)
           setShowInputDialog(false)
         }}
+        isSubscribed={isSubscribed}
       />
     </>
   )
@@ -66,11 +88,13 @@ interface InputDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   onWorkExperienceGenerated: (workExperience: workExperience) => void
+  isSubscribed: boolean
 }
 function InputDialog({
   onOpenChange,
   onWorkExperienceGenerated,
   open,
+  isSubscribed,
 }: InputDialogProps) {
   const form = useForm<GenerateWorkExperienceInput>({
     resolver: zodResolver(generateWorkExperienceSchema),
@@ -97,6 +121,11 @@ function InputDialog({
           <DialogDescription>
             Describe this work experience and the AI will generate an optimized
             entry for you
+            {!isSubscribed && (
+              <p className="mt-1 text-xs opacity-80">
+                This will use 1 credit from your account
+              </p>
+            )}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>

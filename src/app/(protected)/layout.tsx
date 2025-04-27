@@ -1,12 +1,22 @@
+import { AppSidebar } from '@/components/app-sidebar'
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { cookies } from 'next/headers'
+
 interface ProtectedLayoutProps {
   children: React.ReactNode
 }
 
-const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
+const ProtectedLayout = async ({ children }: ProtectedLayoutProps) => {
+  const cookieStore = await cookies()
+  const defaultOpen = cookieStore.get('sidebar_state')?.value === 'true'
   return (
-    <div className="h-full w-full flex flex-col">
-      <div className="flex-1">{children}</div>
-    </div>
+    <SidebarProvider defaultOpen={defaultOpen}>
+      <AppSidebar />
+      <main className="flex-1 w-full">
+        <SidebarTrigger className="h-8 w-auto mx-4 mt-2" />
+        {children}
+      </main>
+    </SidebarProvider>
   )
 }
 

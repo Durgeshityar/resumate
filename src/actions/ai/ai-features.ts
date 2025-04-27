@@ -93,8 +93,7 @@ export async function generateSummary(input: GenerateSummaryInput) {
 export async function generateWorkExperience(
   input: GenerateWorkExperienceInput
 ) {
-  // Todo: Block for non premium users
-
+  // Validate subscription or credits
   const { description } = generateWorkExperienceSchema.parse(input)
 
   const systemMessage = `

@@ -45,6 +45,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { Progress } from '@/components/ui/progress'
+import { useSubscription } from '@/hooks/use-subscription'
 
 export default function AtsScore({
   resumeData,
@@ -55,9 +56,15 @@ export default function AtsScore({
   const [isOptimizing, setIsOptimizing] = useState(false)
   const [atsResult, setAtsResult] = useState<AtsAnalysisResult | null>(null)
   const [optimized, setOptimized] = useState(false)
+  const { isSubscribed, credits, isFeatureAvailable, subscriptionActions } =
+    useSubscription()
 
   const handleAnalyze = async () => {
     if (!jobDescription.trim()) return
+
+    // Check if user can use this premium feature
+    const canProceed = await subscriptionActions.useFeature()
+    if (!canProceed) return
 
     setIsAnalyzing(true)
     try {
@@ -88,6 +95,10 @@ export default function AtsScore({
 
   const handleOptimize = async () => {
     if (!jobDescription.trim() || !atsResult) return
+
+    // Check if user can use this premium feature
+    const canProceed = await subscriptionActions.useFeature()
+    if (!canProceed) return
 
     setIsOptimizing(true)
     try {
@@ -134,6 +145,17 @@ export default function AtsScore({
     }
   }
 
+  const getCreditsLabel = () => {
+    if (isSubscribed) return null
+
+    return (
+      <div className="text-xs text-muted-foreground">
+        This will use 1 credit from your account. You have {credits} credit
+        {credits !== 1 ? 's' : ''} remaining.
+      </div>
+    )
+  }
+
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="space-y-1.5 text-center">
@@ -150,6 +172,11 @@ export default function AtsScore({
           <CardDescription>
             Paste the job description you&apos;re applying for to analyze your
             resume&apos;s compatibility
+            {!isSubscribed && (
+              <p className="mt-1 text-xs opacity-80">
+                Using ATS analysis requires credits
+              </p>
+            )}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -160,10 +187,12 @@ export default function AtsScore({
             className="min-h-[150px]"
           />
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex flex-col gap-2">
           <Button
             onClick={handleAnalyze}
-            disabled={isAnalyzing || !jobDescription.trim()}
+            disabled={
+              isAnalyzing || !jobDescription.trim() || !isFeatureAvailable
+            }
             className="w-full"
           >
             {isAnalyzing ? (
@@ -175,9 +204,15 @@ export default function AtsScore({
               <>
                 <Sparkles className="mr-2 h-4 w-4" />
                 Analyze Resume
+                {!isSubscribed && credits >= 0 && (
+                  <div className="ml-2 text-xs bg-primary/20 px-1.5 py-0.5 rounded-md">
+                    {credits} credit{credits !== 1 ? 's' : ''}
+                  </div>
+                )}
               </>
             )}
           </Button>
+          {getCreditsLabel()}
         </CardFooter>
       </Card>
 
@@ -195,9 +230,10 @@ export default function AtsScore({
                 {!optimized && (
                   <Button
                     onClick={handleOptimize}
-                    disabled={isOptimizing}
+                    disabled={isOptimizing || !isFeatureAvailable}
                     size="sm"
                     variant="secondary"
+                    className="relative"
                   >
                     {isOptimizing ? (
                       <>
@@ -208,6 +244,11 @@ export default function AtsScore({
                       <>
                         <Wand2 className="mr-2 h-4 w-4" />
                         Auto-Optimize Resume
+                        {!isSubscribed && credits >= 0 && (
+                          <div className="ml-2 text-xs bg-primary/20 px-1.5 py-0.5 rounded-md">
+                            {credits} credit{credits !== 1 ? 's' : ''}
+                          </div>
+                        )}
                       </>
                     )}
                   </Button>

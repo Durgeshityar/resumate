@@ -52,12 +52,6 @@ export default async function CoverLettersPage() {
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <Button variant="ghost" className="mb-4">
-          <Link href="/resumes" className="flex items-center gap-2">
-            <ArrowLeft className="h-4 w-4" />
-            <span>Back to Resumes</span>
-          </Link>
-        </Button>
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <h1 className="text-3xl font-bold">Cover Letters</h1>

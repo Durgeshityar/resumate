@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server'
 import { currentUser } from '@/lib/auth-util'
 import { razorpay } from '@/lib/razorpay'
 import { PlanType } from '@prisma/client'
-import { Console } from 'console'
 
 export async function POST(request: Request) {
   try {
@@ -17,7 +16,7 @@ export async function POST(request: Request) {
 
     const prices = {
       MONTHLY: 29,
-      YEARLY: 129,
+      YEARLY: 140,
     }
 
     if (!prices[subscription]) {

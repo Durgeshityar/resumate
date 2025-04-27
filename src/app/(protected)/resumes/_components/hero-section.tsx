@@ -3,7 +3,7 @@
 import { FileText, PlusSquare } from 'lucide-react'
 import Link from 'next/link'
 
-import usePremiumModal from '@/hooks/use-premium-model'
+import { useSubscription } from '@/hooks/use-subscription'
 
 interface HeroSectionProps {
   canCreate: boolean
@@ -14,11 +14,7 @@ export default function HeroSection({
   canCreate,
   totalResumes,
 }: HeroSectionProps) {
-  const premiumModal = usePremiumModal()
-
-  const handlePremiumClick = () => {
-    premiumModal.setOpen(true)
-  }
+  const { subscriptionActions, isSubscribed } = useSubscription()
 
   return (
     <div className="relative isolate overflow-hidden rounded-3xl px-6 py-16 mb-12 text-center bg-gradient-to-tr from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-900 dark:via-indigo-900 dark:to-purple-900">
@@ -58,20 +54,30 @@ export default function HeroSection({
           </Link>
         ) : (
           <button
-            onClick={handlePremiumClick}
+            onClick={subscriptionActions.openPremiumModal}
             className="inline-flex items-center rounded-full bg-black px-6 py-3 text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:bg-white dark:text-black dark:hover:bg-gray-100"
           >
             <PlusSquare className="mr-2 h-5 w-5" />
             Create Resume
           </button>
         )}
-        <Link
-          href="/cover-letters"
-          className="inline-flex items-center rounded-full bg-transparent px-6 py-3 text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:text-white dark:hover:bg-gray-800"
-        >
-          <FileText className="mr-2 h-5 w-5" />
-          Cover Letter
-        </Link>
+        {isSubscribed ? (
+          <Link
+            href="/cover-letters"
+            className="inline-flex items-center rounded-full bg-transparent px-6 py-3 text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:text-white dark:hover:bg-gray-800"
+          >
+            <FileText className="mr-2 h-5 w-5" />
+            Cover Letter
+          </Link>
+        ) : (
+          <button
+            onClick={subscriptionActions.openPremiumModal}
+            className="inline-flex items-center rounded-full bg-transparent px-6 py-3 text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:text-white dark:hover:bg-gray-800"
+          >
+            <FileText className="mr-2 h-5 w-5" />
+            Cover Letter
+          </button>
+        )}
       </div>
     </div>
   )
