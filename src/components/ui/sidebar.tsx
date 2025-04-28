@@ -299,6 +299,10 @@ const SidebarTrigger = React.forwardRef<
       <PanelLeft className="text-muted-foreground" />
       <div className="h-4 w-px bg-muted-foreground" />
       <span className="text-xs text-muted-foreground">{formattedPath}</span>
+      <div className="hidden md:inline-flex items-center justify-center rounded-md bg-muted-foreground px-2 py-1 text-xs font-medium text-white shadow">
+        ⌘ B
+      </div>
+
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )

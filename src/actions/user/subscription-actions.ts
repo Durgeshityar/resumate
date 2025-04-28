@@ -10,6 +10,7 @@ export async function fetchSubscriptionDetails() {
     return {
       isSubscribed: details.isSubscribed,
       credits: details.credits,
+      user: details.user,
     }
   } catch (error) {
     console.error('Error in fetchSubscriptionDetails:', error)

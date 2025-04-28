@@ -3,7 +3,7 @@ import { currentUser } from '@/lib/auth-util'
 import { db } from '@/lib/db'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Plus, FileText, ArrowLeft } from 'lucide-react'
+import { Plus, FileText } from 'lucide-react'
 import { format } from 'date-fns'
 import { CoverLetter } from '@prisma/client'
 

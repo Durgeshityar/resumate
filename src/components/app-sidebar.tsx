@@ -18,7 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { doto } from '@/app/(home)/page'
+
 import { currentUser } from '@/lib/auth-util'
 import { LogoutButton } from './auth/logout-button'
 import Link from 'next/link'
@@ -43,11 +43,11 @@ const items = [
 const Logo = () => {
   return (
     <Link href="/" className="flex items-center ">
-      <div className="h-8 w-8 min-h-8 min-w-8 flex-shrink-0 bg-black rounded-full flex items-center justify-center mr-2">
-        <span className={`text-white font-bold ${doto.className}`}>R</span>
+      <div className="h-8 w-8 min-h-8 min-w-8 flex-shrink-0 bg-black rounded-md flex items-center justify-center mr-2">
+        <span className={`text-white font-bold`}>R</span>
       </div>
       <span
-        className={`text-black font-bold text-xl ${doto.className} group-data-[state=expanded]:block hidden`}
+        className={`text-black font-bold text-xl md:group-data-[state=expanded]:block md:hidden block`}
       >
         Resumate
       </span>
@@ -96,12 +96,11 @@ export async function AppSidebar() {
                 side="top"
                 className="w-[--radix-popper-anchor-width]"
               >
-                <DropdownMenuItem>
-                  <span>Account</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Billing</span>
-                </DropdownMenuItem>
+                <Link href="/billing">
+                  <DropdownMenuItem>
+                    <span>Billing</span>
+                  </DropdownMenuItem>
+                </Link>
                 <LogoutButton>
                   <DropdownMenuItem>
                     <span>Sign out</span>

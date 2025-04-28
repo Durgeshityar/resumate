@@ -5,6 +5,7 @@ import { resumeDataInclude } from '@/lib/types'
 import ResumeItem from './_components/resume-item'
 import HeroSection from './_components/hero-section'
 import { db } from '@/lib/db'
+import { getSubscriptionDetails } from '@/lib/get-subscription-detail'
 
 export const metadata: Metadata = {
   title: 'Your Resumes',
@@ -18,7 +19,7 @@ export default async function Page() {
     throw new Error('User not found')
   }
 
-  const [resumes, totalCount] = await Promise.all([
+  const [resumes, totalCount, subscriptionDetails] = await Promise.all([
     db.resume.findMany({
       where: {
         userId: user.id,
@@ -33,14 +34,18 @@ export default async function Page() {
         userId: user.id,
       },
     }),
+    getSubscriptionDetails(),
   ])
 
   const totalResumes = totalCount ?? 0
 
+  // Allow unlimited resume creation for premium users, but limit non-premium users to 1
+  const canCreate = subscriptionDetails.isSubscribed || totalResumes < 1
+
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <HeroSection canCreate={totalResumes < 1} totalResumes={totalResumes} />
+        <HeroSection canCreate={canCreate} totalResumes={totalResumes} />
 
         {resumes && resumes.length > 0 ? (
           <div>

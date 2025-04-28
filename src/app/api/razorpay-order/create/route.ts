@@ -16,12 +16,12 @@ export async function POST(request: Request) {
 
     const prices = {
       MONTHLY: 29,
-      YEARLY: 140,
+      LIFETIME: 140,
     }
 
     if (!prices[subscription]) {
       return NextResponse.json(
-        { error: 'Invalid subscription type. Use "MONTHLY" or "YEARLY".' },
+        { error: 'Invalid subscription type. Use "MONTHLY" or "LIFETIME".' },
         { status: 400 }
       )
     }
@@ -32,9 +32,9 @@ export async function POST(request: Request) {
     const planDescription =
       subscription === 'MONTHLY'
         ? `1 Month subscription for resumate at $${prices.MONTHLY}`
-        : `1 Year subscription for resumate at $${prices.YEARLY}`
+        : `Lifetime subscription for resumate at $${prices.LIFETIME}`
 
-    // create razorpay ooder
+    // create razorpay order
     const order = await razorpay.orders.create({
       amount: orderAmount,
       currency: 'USD',
@@ -48,33 +48,10 @@ export async function POST(request: Request) {
       },
     })
 
-    // Calculate expiry date
-    const expiryDate = new Date()
-    expiryDate.setMonth(
-      expiryDate.getMonth() + (subscription === 'MONTHLY' ? 1 : 12)
-    )
-    try {
-      await prisma?.subscription.upsert({
-        where: { userId: user.id },
-        update: {
-          plan: PlanType[subscription], // "MONTHLY" or "YEARLY"
-          paymentStatus: 'PENDING',
-          expiry: expiryDate,
-          razorpayId: order.id,
-        },
-        create: {
-          userId: user.id as string,
-          plan: PlanType[subscription],
-          paymentStatus: 'PENDING',
-          expiry: expiryDate,
-          razorpayId: order.id,
-        },
-      })
-    } catch (dbError) {
-      console.log('Error updatimg DB', dbError)
-    }
-
-    return NextResponse.json(order)
+    return NextResponse.json({
+      ...order,
+      subscriptionType: subscription,
+    })
   } catch (error) {
     console.error(error)
     return NextResponse.json(

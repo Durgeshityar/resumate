@@ -8,6 +8,7 @@ import './globals.css'
 import { Toaster } from '@/components/ui/sonner'
 import PremiumModal from '@/components/premium/premium-modal'
 import Script from 'next/script'
+import { SubscriptionProvider } from './(protected)/resumes/_components/subscription-client'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -26,19 +27,22 @@ export default async function RootLayout({
   const session = await auth()
   return (
     <SessionProvider session={session}>
-      <html lang="en">
-        <body className={`${inter.className} antialiased`}>
-          <NuqsAdapter>
-            <Toaster />
-            <PremiumModal />
-            <Script
-              type="text/javascript"
-              src="https://checkout.razorpay.com/v1/checkout.js"
-            />
-            {children}
-          </NuqsAdapter>
-        </body>
-      </html>
+      <SubscriptionProvider>
+        <html lang="en">
+          <body className={`${inter.className} antialiased`}>
+            <NuqsAdapter>
+              <Toaster />
+              <PremiumModal />
+              <Script
+                id="razorpay-checkout-js"
+                src="https://checkout.razorpay.com/v1/checkout.js"
+                strategy="beforeInteractive"
+              />
+              {children}
+            </NuqsAdapter>
+          </body>
+        </html>
+      </SubscriptionProvider>
     </SessionProvider>
   )
 }

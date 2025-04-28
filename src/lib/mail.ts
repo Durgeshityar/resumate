@@ -1,6 +1,10 @@
+'use server'
+
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Server-side only API key access
+const resend = new Resend(process.env.RESEND_API_KEY!)
+console.log(process.env.RESEND_API_KEY)
 
 export const sendTwoFactorTokenEmail = async (email: string, token: string) => {
   await resend.emails.send({
@@ -29,5 +33,14 @@ export const sendVerificationEmail = async (email: string, token: string) => {
     to: email,
     subject: 'Confirm your email',
     html: `<p> Click <a href=${confirmLink}> here</a>  to confirm email</p>`,
+  })
+}
+
+export const sendPaymentSuccessEmail = async (email: string, plan: string) => {
+  await resend.emails.send({
+    from: 'onboarding@resend.dev',
+    to: email,
+    subject: 'Payment successful',
+    html: `<p> Your payment has been successful for ${plan} plan</p>`,
   })
 }

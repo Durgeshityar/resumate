@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
+import { db } from '@/lib/db'
+import { razorpay } from '@/lib/razorpay'
+import { PlanType } from '@prisma/client'
 
 const generatedSignature = (
   razorpayOrderId: string,
@@ -25,12 +28,40 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // updating user
-
   try {
-    const subscriptionUpdate = await prisma?.subscription.update({
-      where: { razorpayId: orderId },
-      data: { paymentStatus: 'SUCCESSFUL' },
+    // Fetch order details from Razorpay to get user and subscription info
+    const order = await razorpay.orders.fetch(orderId)
+    const userId = order.notes?.userId as string
+    const subscriptionType = order.notes?.subscriptionType as PlanType
+
+    if (!userId || !subscriptionType) {
+      throw new Error('Invalid order data')
+    }
+
+    // Calculate expiry date
+    const expiryDate = new Date()
+    if (subscriptionType === 'MONTHLY') {
+      expiryDate.setMonth(expiryDate.getMonth() + 1)
+    } else {
+      // Set a far future date for LIFETIME (e.g., 100 years)
+      expiryDate.setFullYear(expiryDate.getFullYear() + 100)
+    }
+
+    const subscriptionUpdate = await db.subscription.upsert({
+      where: { userId },
+      update: {
+        plan: subscriptionType,
+        paymentStatus: 'SUCCESSFUL',
+        expiry: expiryDate,
+        razorpayId: orderId,
+      },
+      create: {
+        userId,
+        plan: subscriptionType,
+        paymentStatus: 'SUCCESSFUL',
+        expiry: expiryDate,
+        razorpayId: orderId,
+      },
     })
 
     if (!subscriptionUpdate) {

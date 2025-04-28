@@ -3,7 +3,7 @@
  * These routes do not require authentication
  * @type {string[]}
  */
-export const publicRoutes = ['/', '/auth/new-verification', '/api/webhook']
+export const publicRoutes = ['/', '/auth/new-verification']
 
 /**
  * An array of routes that is accessible to public
@@ -29,4 +29,4 @@ export const apiAuthPrefix = '/api/auth'
  * The default redirected path after log in
  * @type {string[]}
  */
-export const DEFAULT_LOGIN_REDIRECT = '/settings'
+export const DEFAULT_LOGIN_REDIRECT = '/resumes'

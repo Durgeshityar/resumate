@@ -52,6 +52,7 @@ export const getSubscriptionDetails = async () => {
 
   return {
     isSubscribed,
+    user: fullUserDetail,
     credits: fullUserDetail.credit,
   }
 }

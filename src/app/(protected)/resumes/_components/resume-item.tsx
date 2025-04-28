@@ -77,17 +77,21 @@ export default function ResumeItem({ resume }: ResumeItemProps) {
           </p>
         )}
 
-        <Link
-          href={`/editor?resumeId=${resume.id}`}
-          className="block relative aspect-[1/1.3] overflow-hidden rounded-md border"
-        >
+        <div className="relative aspect-[1/1.3] overflow-hidden rounded-md border">
           <ResumePreview
             resumeData={mapToResumeValues(resume)}
             contentRef={contentRef}
             className="transform scale-90 transition-transform duration-300 group-hover:scale-95"
           />
           <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-background/80 to-transparent" />
-        </Link>
+          <Link
+            href={`/editor?resumeId=${resume.id}`}
+            className="absolute inset-0 z-10"
+            aria-label={`Edit ${resume.title || 'Untitled'} resume`}
+          >
+            <span className="sr-only">Edit resume</span>
+          </Link>
+        </div>
 
         <div className="flex items-center gap-2 pt-1">
           <Button

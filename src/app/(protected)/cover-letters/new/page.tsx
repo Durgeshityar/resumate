@@ -9,19 +9,18 @@ export const metadata: Metadata = {
   description: 'Create a personalized cover letter based on your resume',
 }
 
-export default async function NewCoverLetterPage({
-  searchParams,
-}: {
-  searchParams: { resumeId?: string }
-}) {
+interface PageProps {
+  searchParams: Promise<{ resumeId?: string }>
+}
+
+export default async function NewCoverLetterPage({ searchParams }: PageProps) {
   const user = await currentUser()
 
   if (!user) {
     throw new Error('User not found')
   }
 
-  const params = await searchParams
-  const resumeId = params.resumeId
+  const { resumeId } = await searchParams
 
   const resume = resumeId
     ? await db.resume.findFirst({
@@ -56,7 +55,7 @@ export default async function NewCoverLetterPage({
             <CoverLetterForm
               resume={resume}
               resumeId={resumeId}
-              userResumes={userResumes}
+              userResumes={userResumes as { id: string; title: string }[]}
             />
           </div>
         </div>

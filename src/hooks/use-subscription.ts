@@ -68,8 +68,6 @@ export function useSubscription(): SubscriptionDetails {
     try {
       const details = await fetchSubscriptionDetails()
 
-      console.log('Subscription details received:', details)
-
       const updatedDetails = {
         isSubscribed: !!details.isSubscribed,
         // Explicitly handle 0 credits case
@@ -80,8 +78,6 @@ export function useSubscription(): SubscriptionDetails {
             ? details.credits
             : 0,
       }
-
-      console.log('Updated subscription details:', updatedDetails)
 
       // Update local state
       setSubscriptionDetails(updatedDetails)

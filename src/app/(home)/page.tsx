@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Github,
@@ -17,35 +17,57 @@ import {
   Clock,
   Briefcase,
   Sparkles,
-} from 'lucide-react' // Example icons
+} from 'lucide-react'
 
-import { Doto } from 'next/font/google'
 import Link from 'next/link'
 import handlePayment from '@/lib/handle-payment'
 import { PlanType } from '@prisma/client'
 import { useCurrentUser } from '@/hooks/use-current-user'
-
-export const doto = Doto({
-  weight: '800',
-  subsets: ['latin'],
-})
+import { toast } from 'sonner'
 
 const MONTHLY_PRICE = 29
-const YEARLY_PRICE = 140
-const MONTHLY_SAVINGS = Math.round(
-  (1 - YEARLY_PRICE / (MONTHLY_PRICE * 12)) * 100
+const LIFETIME_PRICE = 140
+const SAVINGS_PERCENTAGE = Math.round(
+  (1 - LIFETIME_PRICE / (MONTHLY_PRICE * 12)) * 100
 )
 
-export const Logo = () => {
+const Logo = () => {
   return (
-    <div className="h-8 w-8 bg-white rounded-full flex items-center justify-center mr-2">
-      <span className={`text-black font-bold ${doto.className}`}>R</span>
+    <div className="relative h-8 w-8 mr-2">
+      <div className="absolute inset-0 bg-white rounded-[2px]"></div>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <span className="text-black font-bold">R</span>
+      </div>
     </div>
   )
 }
 
-export const HomePage = () => {
+function HomePage() {
   const user = useCurrentUser()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const initiatePayment = async (planType: PlanType) => {
+    try {
+      setIsLoading(true)
+
+      // Check if user is logged in
+      if (!user) {
+        toast.error('You must be logged in to make a purchase')
+        return
+      }
+
+      // Pass the user to handlePayment
+      await handlePayment({
+        subscription: planType,
+      })
+    } catch (error) {
+      console.error('Payment error:', error)
+      toast.error('Something went wrong. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
       <header className="border-b border-gray-800 py-4">
@@ -76,12 +98,14 @@ export const HomePage = () => {
           </nav>
           <div>
             {user ? (
-              <Button
-                variant="outline"
-                className="border-gray-700 text-black hover:text-white hover:bg-gray-800"
-              >
-                Dashboard
-              </Button>
+              <Link href="/resumes">
+                <Button
+                  variant="outline"
+                  className="border-gray-700 text-black hover:text-white hover:bg-gray-800"
+                >
+                  Dashboard
+                </Button>
+              </Link>
             ) : (
               <Link href="/auth/login">
                 <Button
@@ -336,7 +360,7 @@ export const HomePage = () => {
         <section className="py-20 border-b border-gray-800">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold mb-12 text-center">
-              Real Users. Real Conversations.
+              For Developers. By Developers.
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -591,22 +615,21 @@ export const HomePage = () => {
 
                 <Button
                   className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold mb-4"
-                  onClick={() =>
-                    handlePayment({ subscription: PlanType.MONTHLY })
-                  }
+                  onClick={() => initiatePayment(PlanType.MONTHLY)}
+                  disabled={isLoading}
                 >
-                  Get started
+                  {isLoading ? 'Processing...' : 'Get started'}
                 </Button>
               </div>
 
-              {/* Yearly Tier */}
+              {/* Lifetime Tier */}
               <div className="relative bg-gradient-to-b from-blue-500 to-purple-600 text-white p-8 rounded-lg flex flex-col h-full transform hover:scale-105 transition-all duration-300 shadow-xl border-2 border-blue-400">
                 <div className="absolute -top-4 right-0 left-0 mx-auto w-fit px-4 py-1 bg-yellow-400 text-black font-bold rounded-full text-sm">
-                  BEST VALUE • Save {MONTHLY_SAVINGS}%
+                  BEST VALUE • Save {SAVINGS_PERCENTAGE}%
                 </div>
                 <div className="mb-6">
                   <h3 className="text-2xl font-semibold mb-4">
-                    ${YEARLY_PRICE} One-Time
+                    ${LIFETIME_PRICE} One-Time
                   </h3>
                   <p className="text-gray-100 mb-8">
                     Access to all Resuamate features{' '}
@@ -621,11 +644,10 @@ export const HomePage = () => {
 
                 <Button
                   className="w-full bg-white text-black hover:bg-gray-100 font-semibold mb-4 text-lg"
-                  onClick={() =>
-                    handlePayment({ subscription: PlanType.YEARLY })
-                  }
+                  onClick={() => initiatePayment(PlanType.LIFETIME)}
+                  disabled={isLoading}
                 >
-                  Get Lifetime Access
+                  {isLoading ? 'Processing...' : 'Get Lifetime Access'}
                 </Button>
               </div>
             </div>

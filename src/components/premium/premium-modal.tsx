@@ -4,14 +4,16 @@ import { Check } from 'lucide-react'
 import { Dialog, DialogContent, DialogTitle } from '../ui/dialog'
 import { Button } from '../ui/button'
 import usePremiumModal from '@/hooks/use-premium-model'
+import { useState } from 'react'
+import { toast } from 'sonner'
 
 import { PlanType } from '@prisma/client'
 import handlePayment from '@/lib/handle-payment'
 
 const MONTHLY_PRICE = 29
-const YEARLY_PRICE = 140
-const MONTHLY_SAVINGS = Math.round(
-  (1 - YEARLY_PRICE / (MONTHLY_PRICE * 12)) * 100
+const LIFETIME_PRICE = 140
+const SAVINGS_PERCENTAGE = Math.round(
+  (1 - LIFETIME_PRICE / (MONTHLY_PRICE * 12)) * 100
 )
 
 const features = [
@@ -24,6 +26,31 @@ const features = [
 
 export default function PremiumModal() {
   const { open, setOpen } = usePremiumModal()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const initiatePayment = async (planType: PlanType) => {
+    try {
+      setIsLoading(true)
+
+      // Fetch current user from API
+      const userResponse = await fetch('/api/user')
+      const userData = await userResponse.json()
+
+      if (!userData.user) {
+        toast.error('You must be logged in to make a purchase')
+        return
+      }
+
+      // Initiate payment with subscription only
+      await handlePayment({ subscription: planType })
+    } catch (error) {
+      console.error('Payment error:', error)
+      toast.error('Something went wrong. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-3xl p-0 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
@@ -62,29 +89,30 @@ export default function PremiumModal() {
 
                 <Button
                   className="w-full mt-6"
-                  onClick={() =>
-                    handlePayment({ subscription: PlanType.MONTHLY })
-                  }
+                  onClick={() => initiatePayment(PlanType.MONTHLY)}
+                  disabled={isLoading}
                 >
-                  Get Started
+                  {isLoading ? 'Processing...' : 'Get Started'}
                 </Button>
               </div>
             </div>
 
-            {/* Yearly Plan */}
+            {/* Lifetime Plan */}
             <div className="border-2 border-blue-500 dark:border-blue-400 rounded-lg p-6 relative bg-white dark:bg-gray-800 shadow-md">
               <div className="absolute -top-3 right-4 bg-blue-500 text-white text-xs px-3 py-1 rounded-full font-semibold">
                 BEST VALUE
               </div>
               <div className="space-y-4">
                 <div>
-                  <h3 className="text-lg font-bold">Annual</h3>
+                  <h3 className="text-lg font-bold">Lifetime</h3>
                   <div className="mt-2 flex items-baseline">
-                    <span className="text-3xl font-bold">${YEARLY_PRICE}</span>
-                    <span className="ml-1 text-gray-500">/year</span>
+                    <span className="text-3xl font-bold">
+                      ${LIFETIME_PRICE}
+                    </span>
+                    <span className="ml-1 text-gray-500">one-time</span>
                   </div>
                   <p className="text-xs text-green-600 font-semibold mt-1">
-                    Save {MONTHLY_SAVINGS}% compared to monthly
+                    Save {SAVINGS_PERCENTAGE}% compared to monthly
                   </p>
                 </div>
 
@@ -99,11 +127,10 @@ export default function PremiumModal() {
 
                 <Button
                   className="w-full mt-6 bg-blue-600 hover:bg-blue-700"
-                  onClick={() =>
-                    handlePayment({ subscription: PlanType.YEARLY })
-                  }
+                  onClick={() => initiatePayment(PlanType.LIFETIME)}
+                  disabled={isLoading}
                 >
-                  Get Started
+                  {isLoading ? 'Processing...' : 'Get Started'}
                 </Button>
               </div>
             </div>

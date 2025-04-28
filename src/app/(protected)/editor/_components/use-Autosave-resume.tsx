@@ -1,6 +1,6 @@
 import { saveResume } from '@/actions/editor/editor'
 import useDebounce from '@/hooks/use-debounce'
-import { fileReplacer } from '@/lib/utils'
+
 import { ResumeValues } from '@/shemas'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -31,10 +31,6 @@ export default function useAutosaveResume(resumeData: ResumeValues) {
 
         const updatedResume = await saveResume({
           ...newData,
-          ...(JSON.stringify(lastSaveData.photo, fileReplacer) ===
-            JSON.stringify(newData.photo, fileReplacer) && {
-            photo: undefined,
-          }),
           id: resumeId,
         })
 
@@ -65,8 +61,7 @@ export default function useAutosaveResume(resumeData: ResumeValues) {
     }
 
     const hasUnsavedChanges =
-      JSON.stringify(debouncedResumeData, fileReplacer) !==
-      JSON.stringify(lastSaveData, fileReplacer)
+      JSON.stringify(debouncedResumeData) !== JSON.stringify(lastSaveData)
 
     if (hasUnsavedChanges && debouncedResumeData && !isSaving && !isError) {
       save()

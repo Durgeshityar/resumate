@@ -27,7 +27,7 @@ export async function createCoverLetter(formData: {
       jobDescription,
       hiringManager,
       customNotes,
-      tone,
+      tone: toneSetting,
     } = formData
 
     if (!resumeId || !jobTitle || !companyName || !jobDescription) {
@@ -98,6 +98,9 @@ export async function createCoverLetter(formData: {
         jobTitle.toLowerCase().includes('wellness') ||
         jobTitle.toLowerCase().includes('fitness'))
 
+    // Adjust language based on tone
+    const toneAdjustedLanguage = getLanguageForTone(toneSetting)
+
     let coverLetterContent = ''
 
     if (isHealthCoach) {
@@ -106,17 +109,33 @@ export async function createCoverLetter(formData: {
 
 ${salutation}
 
-I am writing to express my interest in the ${jobTitle} position at ${companyName}. With my background in ${skillsList} and passion for promoting holistic wellness and sustainable lifestyle changes, I am well-positioned to help your clients achieve their health and wellness goals.
+I am writing to express my ${
+        toneAdjustedLanguage.interest
+      } in the ${jobTitle} position at ${companyName}. With my background in ${skillsList} and ${
+        toneAdjustedLanguage.passion
+      } for promoting holistic wellness and sustainable lifestyle changes, I am ${
+        toneAdjustedLanguage.confidence
+      } to help your clients achieve their health and wellness goals.
 
 ${
   customNotes ? customNotes + '\n\n' : ''
-}After reviewing the job description, I understand you're seeking a dedicated professional who can ${extractedSkills}. During my time at ${companyExperience}, I successfully ${relevantAchievement}, demonstrating my ability to connect with clients and guide them toward their personal health milestones.
+}After reviewing the job description, I understand you're seeking a ${
+        toneAdjustedLanguage.professional
+      } who can ${extractedSkills}. During my time at ${companyExperience}, I ${
+        toneAdjustedLanguage.successfully
+      } ${relevantAchievement}, demonstrating my ability to connect with clients and guide them toward their personal health milestones.
 
-What particularly draws me to ${companyName} is your commitment to ${companyValueOrProject}. I am excited about the opportunity to bring my expertise in ${relevantSkillsToHighlight} to your team and contribute to your mission of transforming lives through evidence-based coaching and personalized wellness strategies.
+What ${
+        toneAdjustedLanguage.draw
+      } me to ${companyName} is your commitment to ${companyValueOrProject}. I am ${
+        toneAdjustedLanguage.excited
+      } about the opportunity to bring my expertise in ${relevantSkillsToHighlight} to your team and contribute to your mission of transforming lives through evidence-based coaching and personalized wellness strategies.
 
-Thank you for considering my application. I look forward to discussing how my approach to health coaching aligns with your vision and how I can contribute to your clients' success.
+Thank you for considering my application. I ${
+        toneAdjustedLanguage.lookForward
+      } to discussing how my approach to health coaching aligns with your vision and how I can contribute to your clients' success.
 
-Sincerely,
+${toneAdjustedLanguage.closing},
 ${resume.firstName || ''} ${resume.lastName || ''}
 ${resume.email || ''}
 ${resume.phone || ''}
@@ -127,17 +146,31 @@ ${resume.phone || ''}
 
 ${salutation}
 
-I am writing to express my interest in the ${jobTitle} position at ${companyName}. With my background in ${skillsList}, I am confident in my ability to contribute effectively to your team.
+I am writing to express my ${
+        toneAdjustedLanguage.interest
+      } in the ${jobTitle} position at ${companyName}. With my background in ${skillsList}, I am ${
+        toneAdjustedLanguage.confidence
+      } in my ability to contribute effectively to your team.
 
 ${
   customNotes ? customNotes + '\n\n' : ''
-}After reviewing the job description, I understand you're seeking a professional with experience in ${extractedSkills}. During my time at ${companyExperience}, I successfully ${relevantAchievement}, which directly relates to the requirements of this position.
+}After reviewing the job description, I understand you're seeking a ${
+        toneAdjustedLanguage.professional
+      } with experience in ${extractedSkills}. During my time at ${companyExperience}, I ${
+        toneAdjustedLanguage.successfully
+      } ${relevantAchievement}, which directly relates to the requirements of this position.
 
-I am particularly drawn to ${companyName} because of your focus on ${companyValueOrProject}. I am excited about the opportunity to bring my expertise in ${relevantSkillsToHighlight} to your team and contribute to your continued success.
+I am ${
+        toneAdjustedLanguage.draw
+      } to ${companyName} because of your focus on ${companyValueOrProject}. I am ${
+        toneAdjustedLanguage.excited
+      } about the opportunity to bring my expertise in ${relevantSkillsToHighlight} to your team and contribute to your continued success.
 
-Thank you for considering my application. I look forward to the opportunity to discuss how my skills and experiences align with your needs.
+Thank you for considering my application. I ${
+        toneAdjustedLanguage.lookForward
+      } to the opportunity to discuss how my skills and experiences align with your needs.
 
-Sincerely,
+${toneAdjustedLanguage.closing},
 ${resume.firstName || ''} ${resume.lastName || ''}
 ${resume.email || ''}
 ${resume.phone || ''}
@@ -223,33 +256,46 @@ function extractSkillsFromJobDescription(
 // Helper function to generate achievement relevant to job
 function generateRelevantAchievement(
   jobTitle: string,
-  workExperiences: any[],
-  jobDescription: string
+  // We need this parameter for the type signature but don't use it directly in the current implementation
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  workExperiences: {
+    id: string
+    resumeId: string
+    createdAt: Date
+    updatedAt: Date
+    company: string | null
+    position: string | null
+    startDate: Date | null
+    endDate: Date | null
+    description: string | null
+    tasks?: string[] | null
+  }[],
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  jobDescriptionText: string
 ): string {
-  if (workExperiences.length === 0) {
-    return 'delivered exceptional results and developed skills directly applicable to this position'
-  }
-
-  const lastExperience = workExperiences[0]
-  const jobTitleLower = jobTitle.toLowerCase()
+  // We're not using lastExperience but keeping it commented for future use
+  // const lastExperience = workExperiences.length > 0 ? workExperiences[0] : null
 
   if (
-    jobTitleLower.includes('health') ||
-    jobTitleLower.includes('coach') ||
-    jobTitleLower.includes('wellness')
+    jobTitle.toLowerCase().includes('health') ||
+    jobTitle.toLowerCase().includes('coach') ||
+    jobTitle.toLowerCase().includes('wellness')
   ) {
     return 'helped clients achieve sustainable health improvements through personalized coaching and evidence-based strategies'
   }
 
   if (
-    jobTitleLower.includes('developer') ||
-    jobTitleLower.includes('engineer') ||
-    jobTitleLower.includes('programmer')
+    jobTitle.toLowerCase().includes('developer') ||
+    jobTitle.toLowerCase().includes('engineer') ||
+    jobTitle.toLowerCase().includes('programmer')
   ) {
     return 'developed robust, scalable solutions that improved efficiency and user experience'
   }
 
-  if (jobTitleLower.includes('manager') || jobTitleLower.includes('lead')) {
+  if (
+    jobTitle.toLowerCase().includes('manager') ||
+    jobTitle.toLowerCase().includes('lead')
+  ) {
     return 'led teams to exceed targets and implemented processes that improved operational efficiency'
   }
 
@@ -314,6 +360,72 @@ function identifyRelevantSkills(
   }
 
   return skills.slice(0, 2).join(' and ')
+}
+
+// Helper function to adjust language based on tone
+function getLanguageForTone(tone?: string): Record<string, string> {
+  switch (tone?.toLowerCase()) {
+    case 'professional':
+      return {
+        interest: 'strong interest',
+        passion: 'professional commitment',
+        confidence: 'well-qualified',
+        professional: 'qualified candidate',
+        successfully: 'effectively executed',
+        draw: 'particularly interests',
+        excited: 'enthusiastic',
+        lookForward: 'look forward',
+        closing: 'Sincerely',
+      }
+    case 'friendly':
+      return {
+        interest: 'enthusiasm',
+        passion: 'genuine passion',
+        confidence: 'excited',
+        professional: 'dedicated individual',
+        successfully: 'happily accomplished',
+        draw: 'really attracts',
+        excited: 'thrilled',
+        lookForward: 'am eager',
+        closing: 'Warm regards',
+      }
+    case 'confident':
+      return {
+        interest: 'keen interest',
+        passion: 'strong drive',
+        confidence: 'highly confident in my ability',
+        professional: 'proven performer',
+        successfully: 'decisively achieved',
+        draw: 'strongly attracted',
+        excited: 'confident',
+        lookForward: 'am prepared',
+        closing: 'Best regards',
+      }
+    case 'humble':
+      return {
+        interest: 'sincere interest',
+        passion: 'genuine dedication',
+        confidence: 'hopeful',
+        professional: 'diligent worker',
+        successfully: 'worked hard to accomplish',
+        draw: 'humbly admire',
+        excited: 'grateful',
+        lookForward: 'would appreciate',
+        closing: 'With appreciation',
+      }
+    default:
+      return {
+        interest: 'interest',
+        passion: 'passion',
+        confidence: 'well-positioned',
+        professional: 'dedicated professional',
+        successfully: 'successfully',
+        draw: 'particularly draws',
+        excited: 'excited',
+        lookForward: 'look forward',
+        closing: 'Sincerely',
+      }
+  }
 }
 
 export async function deleteCoverLetter(id: string) {

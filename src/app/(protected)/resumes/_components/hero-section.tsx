@@ -3,7 +3,7 @@
 import { FileText, PlusSquare } from 'lucide-react'
 import Link from 'next/link'
 
-import { useSubscription } from '@/hooks/use-subscription'
+import { useSubscriptionContext } from './subscription-client'
 
 interface HeroSectionProps {
   canCreate: boolean
@@ -14,7 +14,7 @@ export default function HeroSection({
   canCreate,
   totalResumes,
 }: HeroSectionProps) {
-  const { subscriptionActions, isSubscribed } = useSubscription()
+  const { subscriptionActions, isSubscribed } = useSubscriptionContext()
 
   return (
     <div className="relative isolate overflow-hidden rounded-3xl px-6 py-16 mb-12 text-center bg-gradient-to-tr from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-900 dark:via-indigo-900 dark:to-purple-900">
