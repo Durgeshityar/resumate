@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     template: '%s | Resumate',
   },
   description:
-    'Create professional, ATS-optimized resumes in minutes with our AI-powered resume builder. Land more interviews with tailored resumes for software engineers.',
+    'Create professional, ATS-optimized resumes in minutes with our open source AI-powered resume builder. Land more interviews with tailored resumes for software engineers.',
   keywords: [
     'AI resume builder',
     'ATS-friendly resume',
