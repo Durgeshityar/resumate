@@ -19,7 +19,7 @@ export default function JobBoardPage() {
             Job Board Coming Soon
           </CardTitle>
           <CardDescription className="text-zinc-500">
-            We're working hard to bring you a comprehensive job board
+            We&apos;re working hard to bring you a comprehensive job board
           </CardDescription>
         </CardHeader>
         <Separator />
@@ -68,10 +68,10 @@ export default function JobBoardPage() {
         <CardFooter className="flex flex-col gap-4">
           <Button className="w-full">
             <MailIcon className="mr-2 h-4 w-4" />
-            Get notified when it's ready
+            Get notified when it&apos;s ready
           </Button>
           <p className="text-xs text-center text-zinc-500">
-            We'll notify you as soon as the job board is available for use
+            We&apos;ll notify you as soon as the job board is available for use
           </p>
         </CardFooter>
       </Card>
