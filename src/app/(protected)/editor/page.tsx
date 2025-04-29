@@ -2,6 +2,7 @@ import { currentUser } from '@/lib/auth-util'
 import ResumeEditor from './_components/Resume-editor'
 import { resumeDataInclude } from '@/lib/types'
 import { Metadata } from 'next'
+import { db } from '@/lib/db'
 
 export const metadata: Metadata = {
   title: 'Design your resume',
@@ -21,7 +22,7 @@ export default async function Page({ searchParams }: PageProps) {
   const userId = user.id as string
 
   const resumeToEdit = resumeId
-    ? await prisma?.resume.findUnique({
+    ? await db.resume.findUnique({
         where: {
           id: resumeId,
           userId,

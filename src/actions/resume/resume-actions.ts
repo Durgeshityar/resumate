@@ -3,6 +3,7 @@
 import { currentUser } from '@/lib/auth-util'
 import { del } from '@vercel/blob'
 import { revalidatePath } from 'next/cache'
+import { db } from '@/lib/db'
 
 export async function deleteResume(id: string) {
   const user = await currentUser()
@@ -13,7 +14,7 @@ export async function deleteResume(id: string) {
 
   const userId = user.id
 
-  const resume = await prisma?.resume.findUnique({
+  const resume = await db.resume.findUnique({
     where: { id, userId },
   })
 
@@ -25,7 +26,7 @@ export async function deleteResume(id: string) {
     await del(resume.photoUrl)
   }
 
-  await prisma?.resume.delete({
+  await db.resume.delete({
     where: { id },
   })
 
