@@ -2,7 +2,7 @@
 
 import { currentUser } from '@/lib/auth-util'
 import { resumeSchema, ResumeValues } from '@/shemas'
-import { db as prisma } from '@/lib/db'
+import { db } from '@/lib/db'
 
 export async function saveResume(values: ResumeValues) {
   const { id } = values
@@ -61,7 +61,7 @@ export async function saveResume(values: ResumeValues) {
   // TODO: check resume counts for non-premium users
 
   const existingResume = id
-    ? await prisma?.resume.findUnique({ where: { id, userId } })
+    ? await db.resume.findUnique({ where: { id, userId } })
     : null
 
   if (id && !existingResume) {
@@ -69,7 +69,7 @@ export async function saveResume(values: ResumeValues) {
   }
 
   if (id) {
-    return prisma?.resume.update({
+    return db.resume.update({
       where: { id },
       data: {
         ...ResumeValues,
@@ -297,7 +297,7 @@ export async function saveResume(values: ResumeValues) {
       },
     })
   } else {
-    return prisma?.resume.create({
+    return db.resume.create({
       data: {
         ...ResumeValues,
         userId,

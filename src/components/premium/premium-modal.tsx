@@ -32,12 +32,11 @@ export default function PremiumModal() {
     try {
       setIsLoading(true)
 
-      // Fetch current user from API
-      const userResponse = await fetch('/api/user')
-      const userData = await userResponse.json()
-
-      if (!userData.user) {
-        toast.error('You must be logged in to make a purchase')
+      // Check if Razorpay is loaded (it should be, but let's verify)
+      if (typeof window === 'undefined' || !window.Razorpay) {
+        toast.error(
+          'Payment gateway not available. Please refresh the page and try again.'
+        )
         return
       }
 

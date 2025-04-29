@@ -80,14 +80,12 @@ function HomePage() {
             <a href="#features" className="text-gray-300 hover:text-white">
               Features
             </a>
-            <a href="#examples" className="text-gray-300 hover:text-white">
-              Examples
-            </a>
+
             <a href="#pricing" className="text-gray-300 hover:text-white">
               Pricing
             </a>
             <a
-              href="https://github.com/your-repo"
+              href="https://github.com/resumate"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-300 hover:text-white flex items-center"
@@ -131,12 +129,13 @@ function HomePage() {
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 leading-tight">
               AI-Powered Resumes <br />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-500">
-                That Get You Hired
+                That Gets You Hired
               </span>
             </h1>
             <p className="text-lg md:text-xl text-gray-400 mb-10 max-w-3xl mx-auto">
-              Community-driven resume builder with AI-powered optimization. Own
-              your data, customize every template, and land your dream job.
+              Community-driven resume builder for software engineers with
+              AI-powered optimization. Own your data, customize every template,
+              and land your dream job.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
               {user ? (
@@ -168,7 +167,7 @@ function HomePage() {
                 asChild
               >
                 <a
-                  href="https://github.com/your-repo"
+                  href="https://github.com/resumate"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -734,17 +733,25 @@ function HomePage() {
               Join thousands of job seekers who have already created
               professional resumes with Resumate.
             </p>
-            <Link href="/auth/login">
-              <Button
-                size="lg"
-                className="bg-white text-black hover:bg-gray-200"
-              >
-                Create Your Resume Now
-              </Button>
-            </Link>
-            <p className="text-sm text-gray-500 mt-4">
-              Free to get started. No credit card required.
-            </p>
+            {user ? (
+              <Link href="/resumes">
+                <Button
+                  size="lg"
+                  className="bg-white text-black hover:bg-gray-200"
+                >
+                  Create Your Resume Now
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/auth/login">
+                <Button
+                  size="lg"
+                  className="bg-white text-black hover:bg-gray-200"
+                >
+                  Create Your Resume Now
+                </Button>
+              </Link>
+            )}
           </div>
         </section>
       </main>
@@ -752,8 +759,8 @@ function HomePage() {
       {/* Footer Section */}
       <footer className="bg-black border-t border-gray-800 py-12">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            <div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            <div className="flex flex-col items-start">
               <div className="flex items-center mb-4">
                 <Logo />
                 <span className="font-bold text-xl">Resumate</span>
@@ -808,45 +815,7 @@ function HomePage() {
                 </li>
               </ul>
             </div>
-            <div>
-              <h3 className="text-sm font-semibold text-white uppercase mb-4">
-                Resources
-              </h3>
-              <ul className="space-y-2">
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white text-sm"
-                  >
-                    Resume Templates
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white text-sm"
-                  >
-                    Resume Examples
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white text-sm"
-                  >
-                    Resume Tips
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white text-sm"
-                  >
-                    Blog
-                  </a>
-                </li>
-              </ul>
-            </div>
+
             <div>
               <h3 className="text-sm font-semibold text-white uppercase mb-4">
                 Company
@@ -889,7 +858,16 @@ function HomePage() {
           </div>
           <div className="border-t border-gray-800 pt-8 text-center text-sm text-gray-400">
             <p>© {new Date().getFullYear()} Resumate. All rights reserved.</p>
-            <p className="mt-2">Made with 💙 by the open source community.</p>
+            <p className="mt-2">
+              Made with 💙 by{' '}
+              <Link
+                href="https://www.linkedin.com/in/durgesh-chandrakar-586a34267/"
+                className="text-blue-500 hover:text-blue-400"
+              >
+                Durgesh
+              </Link>
+              .
+            </p>
           </div>
         </div>
       </footer>

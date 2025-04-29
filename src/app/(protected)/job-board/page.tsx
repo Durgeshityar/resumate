@@ -29,7 +29,7 @@ export default function JobBoardPage() {
               <AlertCircle className="h-8 w-8 text-yellow-500 mb-2" />
               <h3 className="font-medium">In Active Development</h3>
               <p className="text-sm text-zinc-500 mt-1">
-                I&apos;m building this feature right now
+                we are building this feature right now
               </p>
             </div>
             <div className="flex flex-col items-center p-4 text-center bg-gray-50 rounded-lg">

@@ -22,6 +22,8 @@ import {
 import { currentUser } from '@/lib/auth-util'
 import { LogoutButton } from './auth/logout-button'
 import Link from 'next/link'
+import { fetchSubscriptionDetails } from '@/actions/user/subscription-actions'
+import { Badge } from './ui/badge'
 
 const items = [
   {
@@ -40,7 +42,8 @@ const items = [
     icon: Terminal,
   },
 ]
-const Logo = () => {
+const Logo = async () => {
+  const { isSubscribed } = await fetchSubscriptionDetails()
   return (
     <Link href="/" className="flex items-center ">
       <div className="h-8 w-8 min-h-8 min-w-8 flex-shrink-0 bg-black rounded-md flex items-center justify-center mr-2">
@@ -51,12 +54,20 @@ const Logo = () => {
       >
         Resumate
       </span>
+      <Badge
+        variant="outline"
+        className="ml-2 md:group-data-[state=expanded]:block md:hidden block"
+      >
+        {isSubscribed ? 'pro' : ''}
+      </Badge>
     </Link>
   )
 }
 
 export async function AppSidebar() {
   const user = await currentUser()
+  const { isSubscribed } = await fetchSubscriptionDetails()
+
   return (
     <Sidebar collapsible="icon" className="flex md:flex">
       <SidebarContent>
@@ -65,7 +76,7 @@ export async function AppSidebar() {
         </SidebarHeader>
 
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>Products</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

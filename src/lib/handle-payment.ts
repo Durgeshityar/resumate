@@ -80,9 +80,9 @@ export default async function handlePayment({
 
       if (data.isOk) {
         toast.success('Payment successful')
-        if (user?.email) {
-          await sendPaymentSuccessEmail(user.email, subscription)
-        }
+
+        await sendPaymentSuccessEmail(user?.email!, subscription)
+
         redirect('/billing/success')
       } else {
         // This block will mostly not execute i.e. would be handled by Razorpay
