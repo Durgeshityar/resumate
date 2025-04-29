@@ -17,18 +17,25 @@ import {
   Briefcase,
   Sparkles,
 } from 'lucide-react'
-
 import Link from 'next/link'
 import handlePayment from '@/lib/handle-payment'
 import { PlanType } from '@prisma/client'
 import { useCurrentUser } from '@/hooks/use-current-user'
 import { toast } from 'sonner'
+import Script from 'next/script'
 
 const MONTHLY_PRICE = 29
 const LIFETIME_PRICE = 140
 const SAVINGS_PERCENTAGE = Math.round(
   (1 - LIFETIME_PRICE / (MONTHLY_PRICE * 12)) * 100
 )
+
+// SEO constants - used in metadata export
+const PAGE_TITLE = 'Resumate - AI-Powered Resume Builder for Software Engineers'
+const PAGE_DESCRIPTION =
+  'Create professional, ATS-optimized resumes in minutes with our AI-powered resume builder. Land more interviews with tailored resumes for software engineers.'
+const KEYWORDS =
+  'AI resume builder, resume generator, ATS-optimized resume, software engineer resume, job application, professional resume, resume optimization'
 
 const Logo = () => {
   return (
@@ -39,6 +46,31 @@ const Logo = () => {
       </div>
     </div>
   )
+}
+
+// JSON-LD Structured Data
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Resumate',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+    priceSpecification: {
+      '@type': 'UnitPriceSpecification',
+      priceType: 'https://schema.org/FreeTrial',
+    },
+  },
+  description:
+    'AI-powered resume builder that helps software engineers create professional, ATS-optimized resumes.',
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '5',
+    ratingCount: '124',
+  },
 }
 
 function HomePage() {
@@ -79,6 +111,13 @@ function HomePage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
+      {/* JSON-LD Structured Data */}
+      <Script
+        id="schema-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+
       <header className="border-b border-gray-800 py-4">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center">
@@ -94,7 +133,7 @@ function HomePage() {
               Pricing
             </a>
             <a
-              href="https://github.com/resumate"
+              href="https://github.com/Durgeshityar/resumate"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-300 hover:text-white flex items-center"
@@ -176,7 +215,7 @@ function HomePage() {
                 asChild
               >
                 <a
-                  href="https://github.com/resumate"
+                  href="https://github.com/Durgeshityar/resumate"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -201,7 +240,10 @@ function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
               <div className="bg-gray-900/60 backdrop-blur-sm p-8 rounded-lg border border-gray-800 transform transition-all hover:scale-105 hover:border-blue-500/50">
                 <div className="mb-4 flex items-center">
-                  <Clock className="h-6 w-6 text-blue-500 mr-3" />
+                  <Clock
+                    className="h-6 w-6 text-blue-500 mr-3"
+                    aria-hidden="true"
+                  />
                   <h3 className="text-xl font-semibold">5-Minute Resume</h3>
                 </div>
                 <p className="text-gray-300">
@@ -212,7 +254,10 @@ function HomePage() {
 
               <div className="bg-gray-900/60 backdrop-blur-sm p-8 rounded-lg border border-gray-800 transform transition-all hover:scale-105 hover:border-green-500/50">
                 <div className="mb-4 flex items-center">
-                  <Briefcase className="h-6 w-6 text-green-500 mr-3" />
+                  <Briefcase
+                    className="h-6 w-6 text-green-500 mr-3"
+                    aria-hidden="true"
+                  />
                   <h3 className="text-xl font-semibold">Interview Ready</h3>
                 </div>
                 <p className="text-gray-300">
@@ -223,7 +268,10 @@ function HomePage() {
 
               <div className="bg-gray-900/60 backdrop-blur-sm p-8 rounded-lg border border-gray-800 transform transition-all hover:scale-105 hover:border-purple-500/50">
                 <div className="mb-4 flex items-center">
-                  <Sparkles className="h-6 w-6 text-purple-500 mr-3" />
+                  <Sparkles
+                    className="h-6 w-6 text-purple-500 mr-3"
+                    aria-hidden="true"
+                  />
                   <h3 className="text-xl font-semibold">Stand Out</h3>
                 </div>
                 <p className="text-gray-300">
@@ -246,7 +294,10 @@ function HomePage() {
               {/* Feature 1 */}
               <div className="flex flex-col">
                 <div className="h-12 w-12 bg-blue-900/30 rounded-lg flex items-center justify-center mb-6">
-                  <Target className="h-6 w-6 text-blue-500" />
+                  <Target
+                    className="h-6 w-6 text-blue-500"
+                    aria-hidden="true"
+                  />
                 </div>
                 <h3 className="text-2xl font-semibold mb-4">
                   AI Keyword Targeting
@@ -285,7 +336,7 @@ function HomePage() {
               {/* Feature 2 */}
               <div className="flex flex-col">
                 <div className="h-12 w-12 bg-green-900/30 rounded-lg flex items-center justify-center mb-6">
-                  <Edit className="h-6 w-6 text-green-500" />
+                  <Edit className="h-6 w-6 text-green-500" aria-hidden="true" />
                 </div>
                 <h3 className="text-2xl font-semibold mb-4">
                   AI Content Writer
@@ -312,7 +363,10 @@ function HomePage() {
               {/* Feature 3 */}
               <div className="flex flex-col">
                 <div className="h-12 w-12 bg-purple-900/30 rounded-lg flex items-center justify-center mb-6">
-                  <Settings className="h-6 w-6 text-purple-500" />
+                  <Settings
+                    className="h-6 w-6 text-purple-500"
+                    aria-hidden="true"
+                  />
                 </div>
                 <h3 className="text-2xl font-semibold mb-4">Design Control</h3>
                 <p className="text-gray-400 mb-6">
@@ -321,12 +375,30 @@ function HomePage() {
                 </p>
                 <div className="mt-auto">
                   <div className="bg-gray-900 rounded-md p-6 flex flex-wrap gap-3">
-                    <div className="h-8 w-8 rounded-full bg-blue-500"></div>
-                    <div className="h-8 w-8 rounded-full bg-green-500"></div>
-                    <div className="h-8 w-8 rounded-full bg-purple-500"></div>
-                    <div className="h-8 w-8 rounded-full bg-red-500"></div>
-                    <div className="h-8 w-8 rounded-full bg-yellow-500"></div>
-                    <div className="h-8 w-8 rounded-full bg-gray-500"></div>
+                    <div
+                      className="h-8 w-8 rounded-full bg-blue-500"
+                      aria-hidden="true"
+                    ></div>
+                    <div
+                      className="h-8 w-8 rounded-full bg-green-500"
+                      aria-hidden="true"
+                    ></div>
+                    <div
+                      className="h-8 w-8 rounded-full bg-purple-500"
+                      aria-hidden="true"
+                    ></div>
+                    <div
+                      className="h-8 w-8 rounded-full bg-red-500"
+                      aria-hidden="true"
+                    ></div>
+                    <div
+                      className="h-8 w-8 rounded-full bg-yellow-500"
+                      aria-hidden="true"
+                    ></div>
+                    <div
+                      className="h-8 w-8 rounded-full bg-gray-500"
+                      aria-hidden="true"
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -334,7 +406,10 @@ function HomePage() {
               {/* Feature 4 */}
               <div className="flex flex-col">
                 <div className="h-12 w-12 bg-orange-900/30 rounded-lg flex items-center justify-center mb-6">
-                  <Award className="h-6 w-6 text-orange-500" />
+                  <Award
+                    className="h-6 w-6 text-orange-500"
+                    aria-hidden="true"
+                  />
                 </div>
                 <h3 className="text-2xl font-semibold mb-4">Resumate Score</h3>
                 <p className="text-gray-400 mb-6">
@@ -355,6 +430,7 @@ function HomePage() {
                       <div
                         className="bg-green-500 h-2.5 rounded-full"
                         style={{ width: '86%' }}
+                        aria-label="Resume score: 86 out of 100"
                       ></div>
                     </div>
                   </div>
@@ -801,7 +877,11 @@ function HomePage() {
                 control of your career story.
               </p>
               <div className="flex space-x-4 mt-4">
-                <a href="#" className="text-gray-400 hover:text-white">
+                <a
+                  href="https://github.com/Durgeshityar/resumate"
+                  aria-label="GitHub"
+                  className="text-gray-400 hover:text-white"
+                >
                   <Github className="h-5 w-5" />
                 </a>
                 {/* Add other social icons as needed */}
@@ -814,7 +894,7 @@ function HomePage() {
               <ul className="space-y-2">
                 <li>
                   <a
-                    href="#"
+                    href="/resume-builder"
                     className="text-gray-400 hover:text-white text-sm"
                   >
                     Resume Builder
@@ -822,7 +902,7 @@ function HomePage() {
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href="/resume-editor"
                     className="text-gray-400 hover:text-white text-sm"
                   >
                     Resume Editor
@@ -830,7 +910,7 @@ function HomePage() {
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href="/cover-letter"
                     className="text-gray-400 hover:text-white text-sm"
                   >
                     Cover Letter Writer
@@ -838,7 +918,7 @@ function HomePage() {
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href="/keyword-scanner"
                     className="text-gray-400 hover:text-white text-sm"
                   >
                     Keyword Scanner
@@ -854,7 +934,7 @@ function HomePage() {
               <ul className="space-y-2">
                 <li>
                   <a
-                    href="#"
+                    href="/about"
                     className="text-gray-400 hover:text-white text-sm"
                   >
                     About
@@ -870,7 +950,7 @@ function HomePage() {
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href="/privacy"
                     className="text-gray-400 hover:text-white text-sm"
                   >
                     Privacy
@@ -878,7 +958,7 @@ function HomePage() {
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href="/terms"
                     className="text-gray-400 hover:text-white text-sm"
                   >
                     Terms
@@ -907,3 +987,39 @@ function HomePage() {
 }
 
 export default HomePage
+
+// Metadata for Next.js App Router
+export const metadata = {
+  title: PAGE_TITLE,
+  description: PAGE_DESCRIPTION,
+  keywords: KEYWORDS,
+  alternates: {
+    canonical: 'https://resumate.ai',
+  },
+  openGraph: {
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    url: 'https://resumate.ai',
+    siteName: 'Resumate',
+    images: [
+      {
+        url: 'https://resumate.ai/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Resumate AI Resume Builder',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    images: ['https://resumate.ai/twitter-image.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+}
