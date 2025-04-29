@@ -66,7 +66,6 @@ const Logo = async () => {
 
 export async function AppSidebar() {
   const user = await currentUser()
-  const { isSubscribed } = await fetchSubscriptionDetails()
 
   return (
     <Sidebar collapsible="icon" className="flex md:flex">

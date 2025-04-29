@@ -81,7 +81,9 @@ export default async function handlePayment({
       if (data.isOk) {
         toast.success('Payment successful')
 
-        await sendPaymentSuccessEmail(user?.email!, subscription)
+        if (user && user.email) {
+          await sendPaymentSuccessEmail(user.email, subscription)
+        }
 
         redirect('/billing/success')
       } else {
