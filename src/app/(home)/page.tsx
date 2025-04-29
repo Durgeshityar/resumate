@@ -30,13 +30,6 @@ const SAVINGS_PERCENTAGE = Math.round(
   (1 - LIFETIME_PRICE / (MONTHLY_PRICE * 12)) * 100
 )
 
-// SEO constants - used in metadata export
-const PAGE_TITLE = 'Resumate - AI-Powered Resume Builder for Software Engineers'
-const PAGE_DESCRIPTION =
-  'Create professional, ATS-optimized resumes in minutes with our AI-powered resume builder. Land more interviews with tailored resumes for software engineers.'
-const KEYWORDS =
-  'AI resume builder, resume generator, ATS-optimized resume, software engineer resume, job application, professional resume, resume optimization'
-
 const Logo = () => {
   return (
     <div className="relative h-8 w-8 mr-2">
