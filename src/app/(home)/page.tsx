@@ -987,39 +987,3 @@ function HomePage() {
 }
 
 export default HomePage
-
-// Metadata for Next.js App Router
-export const metadata = {
-  title: PAGE_TITLE,
-  description: PAGE_DESCRIPTION,
-  keywords: KEYWORDS,
-  alternates: {
-    canonical: 'https://resumate.ai',
-  },
-  openGraph: {
-    title: PAGE_TITLE,
-    description: PAGE_DESCRIPTION,
-    url: 'https://resumate.ai',
-    siteName: 'Resumate',
-    images: [
-      {
-        url: 'https://resumate.ai/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Resumate AI Resume Builder',
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: PAGE_TITLE,
-    description: PAGE_DESCRIPTION,
-    images: ['https://resumate.ai/twitter-image.jpg'],
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-}

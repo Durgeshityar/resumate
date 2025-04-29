@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import { Metadata } from 'next'
 
 // SEO constants
 const PAGE_TITLE = 'Resumate - AI-Powered Resume Builder for Software Engineers'
@@ -7,6 +7,7 @@ const PAGE_DESCRIPTION =
 const KEYWORDS =
   'AI resume builder, resume generator, ATS-optimized resume, software engineer resume, job application, professional resume, resume optimization'
 
+// Metadata for Next.js App Router
 export const metadata: Metadata = {
   title: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
@@ -35,29 +36,9 @@ export const metadata: Metadata = {
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
     images: ['https://resumate.ai/twitter-image.jpg'],
-    creator: '@resumate',
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  authors: [
-    {
-      name: 'Durgesh Chandrakar',
-      url: 'https://www.linkedin.com/in/durgesh-chandrakar-586a34267/',
-    },
-  ],
-  creator: 'Durgesh Chandrakar',
-  publisher: 'Resumate',
-  verification: {
-    google: 'verification_token',
-    yandex: 'verification_token',
   },
 }
