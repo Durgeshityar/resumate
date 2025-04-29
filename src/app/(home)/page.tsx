@@ -1,12 +1,11 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Github,
   ChevronRight,
   Star,
-  FileText,
   Target,
   Edit,
   Award,
@@ -45,6 +44,16 @@ const Logo = () => {
 function HomePage() {
   const user = useCurrentUser()
   const [isLoading, setIsLoading] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    if (videoRef.current) {
+      const playPromise = videoRef.current.play()
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => console.error('Manual play error:', err))
+      }
+    }
+  }, [])
 
   const initiatePayment = async (planType: PlanType) => {
     try {
@@ -142,7 +151,7 @@ function HomePage() {
                 <Link href="/resumes">
                   <Button
                     size="lg"
-                    className="bg-white text-black hover:bg-gray-200 transition-all"
+                    className="bg-white text-black hover:bg-gray-200 transition-all w-full"
                   >
                     Create Your Resume
                     <ChevronRight className="ml-2 h-4 w-4" />
@@ -152,7 +161,7 @@ function HomePage() {
                 <Link href="/auth/login">
                   <Button
                     size="lg"
-                    className="bg-white text-black hover:bg-gray-200 transition-all"
+                    className="bg-white text-black hover:bg-gray-200 transition-all w-full"
                   >
                     Create Your Resume
                     <ChevronRight className="ml-2 h-4 w-4" />
@@ -163,7 +172,7 @@ function HomePage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-gray-700 text-black hover:text-white hover:bg-gray-800"
+                className="border-gray-700 text-black hover:text-white hover:bg-gray-800 "
                 asChild
               >
                 <a
@@ -492,15 +501,37 @@ function HomePage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
               {/* Video Demo Container */}
-              <div className="relative aspect-video w-full">
+              <div className="relative aspect-video w-full lg:col-span-2">
                 <div className="absolute inset-0 -right-4 -bottom-4 border-2 border-blue-500/30 rounded-lg transform rotate-1"></div>
                 <div className="relative bg-gray-900 rounded-lg overflow-hidden border border-gray-800 shadow-2xl h-full flex items-center justify-center">
-                  {/* This is where your video will be rendered */}
-                  <div className="text-gray-500 flex flex-col items-center">
-                    <FileText className="h-12 w-12 mb-4" />
-                    <p>Demo video will be rendered here</p>
+                  {/* Primary video (MP4) with YouTube fallback */}
+                  <div
+                    style={{
+                      position: 'relative',
+                      boxSizing: 'content-box',
+                      maxHeight: '80vh',
+                      width: '100%',
+                      aspectRatio: 1.7261987491313413,
+                      padding: '40px 0 40px 0',
+                    }}
+                  >
+                    <iframe
+                      src="https://app.supademo.com/embed/cma2cr2bm2b3n13m0rswcnuw2?embed_v=2"
+                      loading="lazy"
+                      title="Resumate Demo"
+                      allow="clipboard-write"
+                      frameBorder="0"
+                      allowFullScreen
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                      }}
+                    ></iframe>
                   </div>
                 </div>
               </div>
