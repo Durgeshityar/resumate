@@ -886,36 +886,36 @@ function HomePage() {
               </h3>
               <ul className="space-y-2">
                 <li>
-                  <a
-                    href="/resume-builder"
+                  <Link
+                    href="#"
                     className="text-gray-400 hover:text-white text-sm"
                   >
                     Resume Builder
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="/resume-editor"
+                  <Link
+                    href="/resumes"
                     className="text-gray-400 hover:text-white text-sm"
                   >
                     Resume Editor
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="/cover-letter"
+                  <Link
+                    href="/cover-letters"
                     className="text-gray-400 hover:text-white text-sm"
                   >
                     Cover Letter Writer
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="/keyword-scanner"
+                  <Link
+                    href="#"
                     className="text-gray-400 hover:text-white text-sm"
                   >
                     Keyword Scanner
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -926,36 +926,36 @@ function HomePage() {
               </h3>
               <ul className="space-y-2">
                 <li>
-                  <a
-                    href="/about"
+                  <Link
+                    href="#"
                     className="text-gray-400 hover:text-white text-sm"
                   >
                     About
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
+                  <Link
                     href="#pricing"
                     className="text-gray-400 hover:text-white text-sm"
                   >
                     Pricing
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="/privacy"
+                  <Link
+                    href="#"
                     className="text-gray-400 hover:text-white text-sm"
                   >
                     Privacy
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="/terms"
+                  <Link
+                    href="#"
                     className="text-gray-400 hover:text-white text-sm"
                   >
                     Terms
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
