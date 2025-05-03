@@ -98,12 +98,55 @@ export async function createCoverLetter(formData: {
         jobTitle.toLowerCase().includes('wellness') ||
         jobTitle.toLowerCase().includes('fitness'))
 
+    // Check if this is a software engineering position
+    const isSoftwareEngineer =
+      jobTitle.toLowerCase().includes('software') ||
+      jobTitle.toLowerCase().includes('developer') ||
+      jobTitle.toLowerCase().includes('engineer') ||
+      jobTitle.toLowerCase().includes('programmer') ||
+      jobTitle.toLowerCase().includes('full stack') ||
+      jobTitle.toLowerCase().includes('frontend') ||
+      jobTitle.toLowerCase().includes('backend')
+
     // Adjust language based on tone
     const toneAdjustedLanguage = getLanguageForTone(toneSetting)
 
     let coverLetterContent = ''
 
-    if (isHealthCoach) {
+    if (isSoftwareEngineer) {
+      // Specialized content for software engineering positions
+      coverLetterContent = `${currentDate}
+
+${salutation}
+
+I am writing to express my ${
+        toneAdjustedLanguage.interest
+      } in the ${jobTitle} position at ${companyName}. As a software professional with expertise in ${skillsList}, I am ${
+        toneAdjustedLanguage.confidence
+      } in my ability to contribute to your technical team and drive innovation.
+
+${
+  customNotes ? customNotes + '\n\n' : ''
+}The technical requirements in your job description align perfectly with my experience in ${extractedSkills}. In my role at ${companyExperience}, I ${
+        toneAdjustedLanguage.successfully
+      } ${relevantAchievement}. This demonstrates my ability to deliver robust, scalable solutions while maintaining clean, maintainable code.
+
+What ${
+        toneAdjustedLanguage.draw
+      } me to ${companyName} is your ${companyValueOrProject}. I am particularly ${
+        toneAdjustedLanguage.excited
+      } about applying my expertise in ${relevantSkillsToHighlight} to tackle complex technical challenges and contribute to your engineering team's success. My experience with modern development practices, including agile methodologies, test-driven development, and continuous integration/deployment, positions me well to integrate seamlessly with your team.
+
+Thank you for considering my application. I ${
+        toneAdjustedLanguage.lookForward
+      } to discussing how my technical skills and problem-solving approach align with your engineering needs and how I can contribute to your development initiatives.
+
+${toneAdjustedLanguage.closing},
+${resume.firstName || ''} ${resume.lastName || ''}
+${resume.email || ''}
+${resume.phone || ''}
+`
+    } else if (isHealthCoach) {
       // Specialized content for health coaching positions
       coverLetterContent = `${currentDate}
 
@@ -289,7 +332,16 @@ function generateRelevantAchievement(
     jobTitle.toLowerCase().includes('engineer') ||
     jobTitle.toLowerCase().includes('programmer')
   ) {
-    return 'developed robust, scalable solutions that improved efficiency and user experience'
+    const technicalAchievements = [
+      'led the development of scalable microservices that improved system performance by 40%',
+      'implemented automated testing pipelines that reduced deployment time by 60%',
+      'architected and delivered robust full-stack solutions that enhanced user experience and increased customer satisfaction',
+      'optimized database queries and application performance, resulting in 50% faster load times',
+      'developed reusable components and libraries that accelerated team productivity by 30%',
+    ]
+    return technicalAchievements[
+      Math.floor(Math.random() * technicalAchievements.length)
+    ]
   }
 
   if (
@@ -342,6 +394,44 @@ function identifyRelevantSkills(
 ): string {
   const skills = skillsList.split(',').map((skill) => skill.trim())
   const descriptionLower = jobDescription.toLowerCase()
+
+  // Check if this is a software engineering position
+  const isTechnicalRole =
+    descriptionLower.includes('developer') ||
+    descriptionLower.includes('engineer') ||
+    descriptionLower.includes('programmer') ||
+    descriptionLower.includes('software') ||
+    descriptionLower.includes('full stack') ||
+    descriptionLower.includes('frontend') ||
+    descriptionLower.includes('backend')
+
+  if (isTechnicalRole) {
+    // Technical skills to prioritize
+    const technicalSkills = skills.filter((skill) =>
+      [
+        'javascript',
+        'typescript',
+        'react',
+        'node',
+        'python',
+        'java',
+        'c++',
+        'aws',
+        'docker',
+        'kubernetes',
+        'ci/cd',
+        'microservices',
+        'rest api',
+        'sql',
+        'nosql',
+        'git',
+      ].some((tech) => skill.toLowerCase().includes(tech.toLowerCase()))
+    )
+
+    if (technicalSkills.length > 0) {
+      return technicalSkills.slice(0, 3).join(', ')
+    }
+  }
 
   const matchedSkills = skills.filter((skill) =>
     descriptionLower.includes(skill.toLowerCase())
