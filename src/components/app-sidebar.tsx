@@ -58,7 +58,7 @@ const Logo = async () => {
         variant="outline"
         className="ml-2 md:group-data-[state=expanded]:block md:hidden block"
       >
-        {isSubscribed ? 'pro' : ''}
+        {isSubscribed ? 'pro' : 'free'}
       </Badge>
     </Link>
   )
